@@ -23,3 +23,6 @@ Revision history for Perl extension GSSAPI.
 	- Because of that change, new() methods now return foo_out types
 	- Newline terminate the stringification of a GSSAPI::Status object
 	- This version has actually worked
+
+0.11  Tue Aug 29 22:03:41 2000
+	- Add a README file and clean up the POD in GSSAPI.pm

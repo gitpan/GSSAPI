@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -243,30 +243,44 @@ sub GSS_S_UNSEQ_TOKEN();
 
 1;
 __END__
-# Below is stub documentation for your module. You better edit it!
 
 =head1 NAME
 
-GSSAPI - Perl extension for blah blah blah
+GSSAPI - Perl extension providing access to the GSSAPIv2 library
 
 =head1 SYNOPSIS
 
   use GSSAPI;
-  blah blah blah
+
+  # lots of complicated stuff here
 
 =head1 DESCRIPTION
 
-Stub documentation for GSSAPI, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
+This module gives access to the routines of the GSSAPI library,
+as described in rfc2743 and rfc2744 and implemented by the
+Kerberos-1.2 distribution from MIT.
 
-Blah blah blah.
+The API presented by this module is a mildly object oriented
+reinterpretation of the C API, where opaque C structures are
+Perl objects, but the style of function call has been left
+mostly untouched.  As a result, most routines modify one or
+more of the parameters passed to them, reflecting the C
+call-by-reference (or call-by-value-return) semantics.
+
+All users of this module are therefore strongly advised to
+localize all usage of these routines to minimize pain if and
+when the API changes.
+
+=head1 SEE ALSO
+
+RFC2743
+RFC2744
+GSSAPI::Status(3p)
+GSSAPI::OID(3p)
+GSSAPI::OID::Set(3p)
+perl(1)
 
 =head2 EXPORT
-
-None by default.
-
-=head2 Exportable constants
 
   GSS_C_ACCEPT
   GSS_C_AF_APPLETALK
@@ -351,266 +365,32 @@ None by default.
 
 =head2 Exportable functions
 
-When accessing these functions from Perl, prefix C<gss_> should be removed.
+    $status = indicate_mechs($oidset)
 
-  OM_uint32   gss_accept_sec_context
-  (OM_uint32   * minor_status,
-            gss_ctx_id_t   * context_handle,
-            gss_cred_id_t acceptor_cred_handle,
-            gss_buffer_t input_token_buffer,
-            gss_channel_bindings_t input_chan_bindings,
-            gss_name_t   * src_name,
-            gss_OID   * mech_type,
-            gss_buffer_t output_token,
-            OM_uint32   * ret_flags,
-            OM_uint32   * time_rec,
-            gss_cred_id_t   * delegated_cred_handle
-           )  
-  OM_uint32   gss_acquire_cred
-  (OM_uint32   * minor_status,
-            gss_name_t desired_name,
-            OM_uint32 time_req,
-            gss_OID_set desired_mechs,
-            gss_cred_usage_t cred_usage,
-            gss_cred_id_t   * output_cred_handle,
-            gss_OID_set   * actual_mechs,
-            OM_uint32   * time_rec
-           )  
-  OM_uint32   gss_add_cred
-  (OM_uint32   * minor_status,
-	    gss_cred_id_t input_cred_handle,
-	    gss_name_t desired_name,
-	    gss_OID desired_mech,
-	    gss_cred_usage_t cred_usage,
-	    OM_uint32 initiator_time_req,
-	    OM_uint32 acceptor_time_req,
-	    gss_cred_id_t   * output_cred_handle,
-	    gss_OID_set   * actual_mechs,
-	    OM_uint32   * initiator_time_rec,
-	    OM_uint32   * acceptor_time_rec
-	   )  
-  OM_uint32   gss_add_oid_set_member
-  (OM_uint32   * minor_status,
-	    gss_OID member_oid,
-	    gss_OID_set   * oid_set
-	   )  
-  OM_uint32   gss_canonicalize_name
- 	(OM_uint32  * minor_status,
-		 const gss_name_t input_name,
-		 const gss_OID mech_type,
-		 gss_name_t * output_name
-	)  
-  OM_uint32   gss_compare_name
-  (OM_uint32   * minor_status,
-            gss_name_t name1,
-            gss_name_t name2,
-            int   * name_equal
-           )  
-  OM_uint32   gss_context_time
-  (OM_uint32   * minor_status,
-            gss_ctx_id_t context_handle,
-            OM_uint32   * time_rec
-           )  
-  OM_uint32   gss_create_empty_oid_set
-  (OM_uint32   * minor_status,
-	    gss_OID_set   * oid_set
-	   )  
-  OM_uint32   gss_delete_sec_context
-  (OM_uint32   * minor_status,
-            gss_ctx_id_t   * context_handle,
-            gss_buffer_t output_token
-           )  
-  OM_uint32   gss_display_name
-  (OM_uint32   * minor_status,
-            gss_name_t input_name,
-            gss_buffer_t output_name_buffer,
-            gss_OID   * output_name_type
-           )  
-  OM_uint32   gss_display_status
-  (OM_uint32   * minor_status,
-            OM_uint32 status_value,
-            int status_type,
-            gss_OID,			 
-            OM_uint32   * message_context,
-            gss_buffer_t status_string
-           )  
-  OM_uint32   gss_duplicate_name
- 	(OM_uint32  * minor_status,
-		 const gss_name_t input_name,
-		 gss_name_t * dest_name
-	)  
-  OM_uint32   gss_export_name
- 	(OM_uint32  * minor_status,
-		 const gss_name_t input_name,
-		 gss_buffer_t exported_name
-	)  
-  OM_uint32   gss_export_name_object
-  (OM_uint32   * minor_status,
-	    gss_name_t input_name,
-	    gss_OID desired_name_type,
-	    void   *   * output_name
-	   )  
-  OM_uint32   gss_export_sec_context
-  (OM_uint32   * minor_status,
-	    gss_ctx_id_t   * context_handle,
-	    gss_buffer_t interprocess_token
-	    )  
-  OM_uint32   gss_get_mic
-  (OM_uint32   * minor_status,
-	    gss_ctx_id_t context_handle,
-	    gss_qop_t qop_req,
-	    gss_buffer_t message_buffer,
-	    gss_buffer_t message_token
-	   )  
-  OM_uint32   gss_import_name
-  (OM_uint32   * minor_status,
-            gss_buffer_t input_name_buffer,
-            gss_OID,			 
-            gss_name_t   * output_name
-           )  
-  OM_uint32   gss_import_name_object
-  (OM_uint32   * minor_status,
-	    void   * input_name,
-	    gss_OID input_name_type,
-	    gss_name_t   * output_name
-	   )  
-  OM_uint32   gss_import_sec_context
-  (OM_uint32   * minor_status,
-	    gss_buffer_t interprocess_token,
-	    gss_ctx_id_t   * context_handle
-	    )  
-  OM_uint32   gss_indicate_mechs
-  (OM_uint32   * minor_status,
-            gss_OID_set   * mech_set
-           )  
-  OM_uint32   gss_init_sec_context
-  (OM_uint32   * minor_status,
-            gss_cred_id_t claimant_cred_handle,
-            gss_ctx_id_t   * context_handle,
-            gss_name_t target_name,
-            gss_OID,			 
-            OM_uint32 req_flags,
-            OM_uint32 time_req,
-            gss_channel_bindings_t input_chan_bindings,
-            gss_buffer_t input_token,
-            gss_OID   * actual_mech_type,
-            gss_buffer_t output_token,
-            OM_uint32   * ret_flags,
-            OM_uint32   * time_rec
-           )  
-  OM_uint32   gss_inquire_context
-  (OM_uint32   * minor_status,
-	    gss_ctx_id_t context_handle,
-	    gss_name_t   * src_name,
-	    gss_name_t   * targ_name,
-	    OM_uint32   * lifetime_rec,
-	    gss_OID   * mech_type,
-	    OM_uint32   * ctx_flags,
-	    int   * locally_initiated,
-	    int   * open
-	   )  
-  OM_uint32   gss_inquire_cred
-  (OM_uint32   * minor_status,
-            gss_cred_id_t cred_handle,
-            gss_name_t   * name,
-            OM_uint32   * lifetime,
-            gss_cred_usage_t   * cred_usage,
-            gss_OID_set   * mechanisms
-           )  
-  OM_uint32   gss_inquire_cred_by_mech
-  (OM_uint32    * minor_status,
-	    gss_cred_id_t cred_handle,
-	    gss_OID mech_type,
-	    gss_name_t   * name,
-	    OM_uint32   * initiator_lifetime,
-	    OM_uint32   * acceptor_lifetime,
-	    gss_cred_usage_t   * cred_usage
-	   )  
-  OM_uint32   gss_inquire_names_for_mech
-  (OM_uint32   * minor_status,
-	    gss_OID mechanism,
-	    gss_OID_set   * name_types
-	   )  
-  OM_uint32   gss_oid_to_str
-  (OM_uint32   * minor_status,
-	    gss_OID oid,
-	    gss_buffer_t oid_str
-	   )  
-  OM_uint32   gss_process_context_token
-  (OM_uint32   * minor_status,
-            gss_ctx_id_t context_handle,
-            gss_buffer_t token_buffer
-           )  
-  OM_uint32   gss_release_buffer
-  (OM_uint32   * minor_status,
-            gss_buffer_t buffer
-           )  
-  OM_uint32   gss_release_cred
-  (OM_uint32   * minor_status,
-            gss_cred_id_t   * cred_handle
-           )  
-  OM_uint32   gss_release_name
-  (OM_uint32   * minor_status,
-            gss_name_t   * input_name
-           )  
-  OM_uint32   gss_release_oid
-  (OM_uint32   * minor_status,
-	    gss_OID   * oid
-	   )  
-  OM_uint32   gss_release_oid_set
-  (OM_uint32   * minor_status,
-            gss_OID_set   * set
-           )  
-  OM_uint32   gss_str_to_oid
-  (OM_uint32   * minor_status,
-	    gss_buffer_t oid_str,
-	    gss_OID   * oid
-	   )  
-  OM_uint32   gss_test_oid_set_member
-  (OM_uint32   * minor_status,
-	    gss_OID member,
-	    gss_OID_set set,
-	    int   * present
-	   )  
-  OM_uint32   gss_unwrap
-  (OM_uint32   * minor_status,
-	    gss_ctx_id_t context_handle,
-	    gss_buffer_t input_message_buffer,
-	    gss_buffer_t output_message_buffer,
-	    int   * conf_state,
-	    gss_qop_t   * qop_state
-	   )  
-  OM_uint32   gss_verify_mic
-  (OM_uint32   * minor_status,
-	    gss_ctx_id_t context_handle,
-	    gss_buffer_t message_buffer,
-	    gss_buffer_t message_token,
-	    gss_qop_t * qop_state
-	   )  
-  OM_uint32   gss_wrap
-  (OM_uint32   * minor_status,
-	    gss_ctx_id_t context_handle,
-	    int conf_req_flag,
-	    gss_qop_t qop_req,
-	    gss_buffer_t input_message_buffer,
-	    int   * conf_state,
-	    gss_buffer_t output_message_buffer
-	   )  
-  OM_uint32   gss_wrap_size_limit
-  (OM_uint32   * minor_status,
-	    gss_ctx_id_t context_handle,
-	    int conf_req_flag,
-	    gss_qop_t qop_req,
-	    OM_uint32 req_output_size,
-	    OM_uint32 * max_input_size
-	   )  
+    # Constant OIDs provided:
+    $oid = gss_nt_user_name;
+    $oid = gss_nt_machine_uid_name;
+    $oid = gss_nt_string_uid_name;
+    $oid = gss_nt_service_name;
+    $oid = gss_nt_exported_name;
+    $oid = gss_nt_service_name_v2;
+    $oid = gss_nt_krb5_name;
+    $oid = gss_nt_krb5_principal;
+    $oid = gss_mech_krb5;
+    $oid = gss_mech_krb5_old;
+    $oid = gss_mech_krb5_v2;
+
+    # Constant OID sets provided:
+    $oidset = gss_mech_set_krb5;
+    $oidset = gss_mech_set_krb5_old;
+    $oidset = gss_mech_set_krb5_both;
+    $oidset = gss_mech_set_krb5_v2;
+    $oidset = gss_mech_set_krb5_v1v2;
+
+All other functions are class or instance methods.
 
 =head1 AUTHOR
 
 Philip Guenther, guenther@gac.edu
-
-=head1 SEE ALSO
-
-perl(1).
 
 =cut
