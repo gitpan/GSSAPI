@@ -98,7 +98,8 @@ my($okay);
 
     my($name, $name2, $same, $export, $display, $type);
 
-    $status = GSSAPI::Name->import($name, 'chpasswd@mars.gac.edu');
+    $status = GSSAPI::Name->import($name, 'chpasswd@mars.gac.edu',
+				gss_nt_service_name);
     check($status);
     check(ref $name eq "GSSAPI::Name");
 

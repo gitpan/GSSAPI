@@ -32,3 +32,8 @@ Revision history for Perl extension GSSAPI.
 	- Added missing '&'s to Context::accept and Context::export
 	  method implementations.  Thanks to Jacob Gorm Hansen <jg@ioi.dk>
 	  for finding this.
+
+0.13  Thu Mar 24 10:46:59 2005
+	- Actually document this module as being under the same
+	  license as Perl (how did I miss this?!?)
+

@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -392,5 +392,11 @@ All other functions are class or instance methods.
 =head1 AUTHOR
 
 Philip Guenther <pguen@cpan.org>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2000,2001,2005 Philip Guenther. All rights reserved.
+This program is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.
 
 =cut
