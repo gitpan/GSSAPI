@@ -1,0 +1,25 @@
+Revision history for Perl extension GSSAPI.
+
+0.01  Fri Aug 18 22:14:18 2000
+	- original version; created by h2xs 1.4 with options
+		-x -n GSSAPI -p gss_ /home/local/perl/GSSAPI/foo/gssapi.h
+
+0.02  Mon Aug 28 01:07:30 2000
+	- Redid typemaps to separate input, optional-input, output,
+	  optional-output, and const-output.
+	- Add GSSAPI::is_valid() to allow users to test whether a NULL
+	  object was returned.  Made all sub-modules except GSSAPI::Binding
+	  into actual subclasses by setting @ISA in each to include
+	  GSSAPI itself.
+	- Add DESTROY method to GSSAPI::Context that deletes the context,
+	  ignoring any errors.
+
+0.10  Mon Aug 28 18:17:27 2000
+	- Use SvOK() instead of comparing to &PL_sv_undef
+	- Add gss_buffer_desc_out
+	- Don't do the sv_setref_iv on output of PTROBJ_ or PTROBJ_OPT
+	  if the value isn't changing.  This keeps the value from being
+	  destructed while in use.
+	- Because of that change, new() methods now return foo_out types
+	- Newline terminate the stringification of a GSSAPI::Status object
+	- This version has actually worked

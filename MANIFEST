@@ -1,0 +1,17 @@
+Changes
+GSSAPI.pm
+GSSAPI.xs
+GSSAPI/OID.pm
+GSSAPI/OID/Set.pm
+GSSAPI/Status.pm
+MANIFEST
+Makefile.PL
+test.pl
+typemap
+xs/Binding.xs
+xs/Context.xs
+xs/Cred.xs
+xs/Name.xs
+xs/OID.xs
+xs/OID__Set.xs
+xs/Status.xs
