@@ -6,13 +6,6 @@
 #include <gssapi/gssapi_generic.h>
 #include <gssapi/gssapi_krb5.h>
 
-static int
-not_here(char *s)
-{
-    croak("%s not implemented on this architecture", s);
-    return -1;
-}
-
 static double
 constant_GSS_S_NO(char *name, int len, int arg)
 {
@@ -537,65 +530,6 @@ not_there:
     errno = ENOENT;
     return 0;
 }
-
-static double
-constant_GSS_SI(char *name, int len, int arg)
-{
-    if (6 + 5 >= len ) {
-	errno = EINVAL;
-	return 0;
-    }
-    switch (name[6 + 5]) {
-    case 'I':
-	if (strEQ(name + 6, "ZEOF_INT")) {	/* GSS_SI removed */
-#ifdef GSS_SIZEOF_INT
-	    return GSS_SIZEOF_INT;
-#else
-	    goto not_there;
-#endif
-	}
-    case 'L':
-	if (strEQ(name + 6, "ZEOF_LONG")) {	/* GSS_SI removed */
-#ifdef GSS_SIZEOF_LONG
-	    return GSS_SIZEOF_LONG;
-#else
-	    goto not_there;
-#endif
-	}
-    case 'S':
-	if (strEQ(name + 6, "ZEOF_SHORT")) {	/* GSS_SI removed */
-#ifdef GSS_SIZEOF_SHORT
-	    return GSS_SIZEOF_SHORT;
-#else
-	    goto not_there;
-#endif
-	}
-    }
-    errno = EINVAL;
-    return 0;
-
-not_there:
-    errno = ENOENT;
-    return 0;
-}
-
-static double
-constant_GSS_S(char *name, int len, int arg)
-{
-    switch (name[5 + 0]) {
-    case 'I':
-	return constant_GSS_SI(name, len, arg);
-    case '_':
-	return constant_GSS_S_(name, len, arg);
-    }
-    errno = EINVAL;
-    return 0;
-
-not_there:
-    errno = ENOENT;
-    return 0;
-}
-
 
 static double
 constant_GSS_C_AF_N(char *name, int len, int arg)
@@ -1245,18 +1179,10 @@ constant_G(char *name, int len, int arg)
 	if (!strnEQ(name + 1,"SS_", 3))
 	    break;
 	return constant_GSS_C(name, len, arg);
-    case 'D':
-	if (strEQ(name + 1, "SS_DLLIMP")) {	/* G removed */
-#ifdef GSS_DLLIMP
-	    return GSS_DLLIMP;
-#else
-	    goto not_there;
-#endif
-	}
     case 'S':
-	if (!strnEQ(name + 1,"SS_", 3))
+	if (!strnEQ(name + 1,"SS_S_", 5))
 	    break;
-	return constant_GSS_S(name, len, arg);
+	return constant_GSS_S_(name, len, arg);
     }
     errno = EINVAL;
     return 0;

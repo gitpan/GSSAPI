@@ -71,7 +71,7 @@ accept(context, acc_cred, in_token, binding, out_name, out_mech, out_token, out_
 	GSSAPI::Cred_optout	delegated_cred
     CODE:
 	RETVAL.major =
-		gss_accept_sec_context(&RETVAL.minor, context, acc_cred,
+		gss_accept_sec_context(&RETVAL.minor, &context, acc_cred,
 				       &in_token, binding, out_name, out_mech,
 				       &out_token, out_flags, out_time,
 				       delegated_cred);
@@ -183,9 +183,10 @@ export(context, token)
 	GSSAPI::Context		context
 	gss_buffer_desc_out	token
     CODE:
-	RETVAL.major = gss_export_sec_context(&RETVAL.minor, context, &token);
+	RETVAL.major = gss_export_sec_context(&RETVAL.minor, &context, &token);
     OUTPUT:
 	RETVAL
+	context
 	token
 
 GSSAPI::Status

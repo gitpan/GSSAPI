@@ -105,7 +105,7 @@ amount of C code involved and making it more flexible.
 
 =head1 AUTHOR
 
-Philip Guenther, guenther@gac.edu
+Philip Guenther <pguen@cpan.org>
 
 =head1 SEE ALSO
 

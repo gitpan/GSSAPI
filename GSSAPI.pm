@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -391,6 +391,6 @@ All other functions are class or instance methods.
 
 =head1 AUTHOR
 
-Philip Guenther, guenther@gac.edu
+Philip Guenther <pguen@cpan.org>
 
 =cut

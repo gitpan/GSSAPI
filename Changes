@@ -26,3 +26,9 @@ Revision history for Perl extension GSSAPI.
 
 0.11  Tue Aug 29 22:03:41 2000
 	- Add a README file and clean up the POD in GSSAPI.pm
+
+0.12  Tue Nov  6 10:48:54 2001
+	- Remove some unused constants from the .xs file.
+	- Added missing '&'s to Context::accept and Context::export
+	  method implementations.  Thanks to Jacob Gorm Hansen <jg@ioi.dk>
+	  for finding this.

@@ -79,7 +79,7 @@ routine in rfc2743 if you're not sure.
 
 =head1 AUTHOR
 
-Philip Guenther, guenther@gac.edu
+Philip Guenther <pguen@cpan.org>
 
 =head1 SEE ALSO
 

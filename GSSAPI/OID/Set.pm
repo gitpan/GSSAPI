@@ -58,7 +58,7 @@ so any fix would be implementation specific.
 
 =head1 AUTHOR
 
-Philip Guenther, guenther@gac.edu
+Philip Guenther <pguen@cpan.org>
 
 =head1 SEE ALSO
 
