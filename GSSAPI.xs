@@ -3,8 +3,49 @@
 #include "XSUB.h"
 /* #include "/src/admin/kerberos/krb5-1.2.1-local/src/lib/gssapi/krb5/gssapiP_krb5.h" */
 
+
+#if defined(HEIMDAL)
+#include <gssapi.h>
+
+#define gss_nt_user_name GSS_C_NT_USER_NAME
+#define gss_nt_machine_uid_name GSS_KRB5_NT_MACHINE_UID_NAME
+#define gss_nt_string_uid_name GSS_C_NT_STRING_UID_NAME
+#define gss_nt_krb5_principal GSS_KRB5_NT_PRINCIPAL_NAME
+#define gss_nt_krb5_name GSS_KRB5_NT_USER_NAME
+#define gss_nt_service_name GSS_C_NT_HOSTBASED_SERVICE
+#define gss_nt_exported_name GSS_C_NT_EXPORT_NAME
+#endif
+
+#if !defined(HEIMDAL)
 #include <gssapi/gssapi_generic.h>
 #include <gssapi/gssapi_krb5.h>
+#endif
+
+#if defined(HEIMDAL)
+
+#define gss_mech_krb5  GSS_KRB5_MECHANISM
+
+static gss_OID_desc  mygss_mech_krb5  = {9, (void *) "\x2a\x86\x48\x86\xf7\x12\x01\x02\x02"};
+
+
+
+
+
+static gss_OID_desc  mygss_mech_krb5_old  = {5, (void *) "\x2b\x05\x01\x05\x02"};
+static gss_OID_desc* gss_mech_krb5_old = &mygss_mech_krb5_old;
+
+static gss_OID_set_desc mygss_mech_set_krb5 = { 1, &mygss_mech_krb5 };
+static gss_OID_set_desc* gss_mech_set_krb5 = &mygss_mech_set_krb5;
+
+static gss_OID_set_desc mygss_mech_set_krb5_old = { 1, &mygss_mech_krb5_old };
+static gss_OID_set_desc* gss_mech_set_krb5_old = &mygss_mech_set_krb5_old;
+
+static gss_OID_desc* botharray[] = { &mygss_mech_krb5_old, &mygss_mech_krb5 };
+
+static gss_OID_set_desc mygss_mech_set_krb5_both = { 1, &mygss_mech_krb5 };
+static gss_OID_set_desc* gss_mech_set_krb5_both = &mygss_mech_set_krb5_both;
+#endif
+
 
 static double
 constant_GSS_S_NO(char *name, int len, int arg)
@@ -1286,15 +1327,37 @@ oid_set_is_dynamic(GSSAPI__OID__Set oidset)
 {
     return (oidset != (gss_OID_set)gss_mech_set_krb5		&&
 	    oidset != (gss_OID_set)gss_mech_set_krb5_old	&&
-	    oidset != (gss_OID_set)gss_mech_set_krb5_both	&&
+	    oidset != (gss_OID_set)gss_mech_set_krb5_both
+/*
+
+# Achim Grolms, 2006-02-04
+# deleted this function, it makes the compile
+# fail, I don't know if this function is useful
+
+		&&
 	    oidset != (gss_OID_set)gss_mech_set_krb5_v2		&&
-	    oidset != (gss_OID_set)gss_mech_set_krb5_v1v2);
+	    oidset != (gss_OID_set)gss_mech_set_krb5_v1v2
+*/
+	    );
 }
 
 
 MODULE = GSSAPI		PACKAGE = GSSAPI
 
 PROTOTYPES: ENABLE
+
+int
+gssapi_implementation_is_heimdal()
+CODE:
+#if defined(HEIMDAL)
+      RETVAL = 1;
+#endif
+#if !defined(HEIMDAL)
+      RETVAL = 0;
+#endif
+OUTPUT:
+        RETVAL
+
 
 double
 constant(sv,arg)

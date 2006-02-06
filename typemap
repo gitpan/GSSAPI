@@ -168,8 +168,13 @@ T_BUFFER_DESC_COPY
 T_BUFFER_STR
 	$var.value = SvPV($arg, $var.length);
 	if ($var.length) {
-	    if (((char*)$var.value)[$var.length-1] != '\\0' &&
-		((char*)$var.value)[$var.length]   == '\\0')
+	    if (((char*)$var.value)[$var.length-2] != '\\0' &&
+		((char*)$var.value)[$var.length-1]   == '\\0')
+# 2006-02-06  patch TP-01 by Merijn Broeren
+#
+#	    if (((char*)$var.value)[$var.length-1] != '\\0' &&
+#		((char*)$var.value)[$var.length]   == '\\0')
+#
 		$var.length++;
 	} else if (((char*)$var.value)[0] == '\\0') {
 	    $var.length++;
@@ -269,8 +274,11 @@ T_BUFFER_DESC_COPY
 
 T_BUFFER_STR
 	if ($var.value != NULL) {
-	    sv_setpvn($arg, $var.value, $var.length);
-	    SvCUR_set($arg, $var.length-1);
+	    sv_setpv($arg, $var.value);
+#	    sv_setpvn($arg, $var.value, $var.length);
+#	    SvCUR_set($arg, $var.length-1);
+#
+# 2006-02-06 TP-02 Merijn Broeren
 	    SvSETMAGIC($arg);
 	} else {
 	    sv_setsv_mg($arg, &PL_sv_undef);
@@ -282,8 +290,11 @@ T_BUFFER_STR
 
 T_BUFFER_STR_OUT
 	if ($var.value != NULL) {
-	    sv_setpvn($arg, $var.value, $var.length);
-	    SvCUR_set($arg, $var.length-1);
+	    # patch TP-03 Merijn Broeren
+	    # see http://rt.cpan.org/Public/Bug/Display.html?id=5681
+            #sv_setpvn($arg, $var.value, $var.length);
+	    sv_setpv($arg, $var.value);
+	    #SvCUR_set($arg, $var.length);
 	    SvSETMAGIC($arg);
 	} else {
 	    sv_setsv_mg($arg, &PL_sv_undef);
@@ -348,7 +359,7 @@ T_BUFFER_STR_OUT
 #	not a INPUT: block, you have to do the mapping of object
 #	type to real type, ala "GSSAPI::Context" -> "GSSAPI__Context".
 #	So, a usage will run something like:
-#	
+#
 #	foo(param)
 #	    PREINIT:
 #		GSSAPI__OID		param_real

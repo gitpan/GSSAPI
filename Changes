@@ -36,4 +36,20 @@ Revision history for Perl extension GSSAPI.
 0.13  Thu Mar 24 10:46:59 2005
 	- Actually document this module as being under the same
 	  license as Perl (how did I miss this?!?)
+0.14 Mo Feb  6 18:46:21 CET 2006
+	-Maintanace overtaken by Achim Grolms. Thank you Philip!
+	 our base is
+	 <http://perlgssapi.sourceforge.net/>
+	 -deleted gss_mech_set_krb5_v1v2(), gss_mech_set_krb5_v2()
+	 from OID__Set.xs. It makes the compile fail
+	 -deleted gss_mech_krb5_v2() from OID.xs
+	 -deletd gss_mech_set_krb5_v2, gss_mech_set_krb5_v1v2 from GSSAPI.xs
+	 -gss_str_to_oid() and gss_oid_to_str()
+	  are not present in Heimdal implementations.
+	  I've ifdefed them to croak.
+	  Testsuite is adjusted to skip them.
+	-Added patches from Merijn Broeren to typemap file.
+	 this fixes (hopefully) http://rt.cpan.org/Public/Bug/Display.html?id=5681
+	 Just grep the file for "Merijn", I've marked the sections
+	-Added destructor to Cred.xs (Thanks Merijn!)
 

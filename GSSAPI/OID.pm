@@ -22,7 +22,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 	gss_nt_krb5_principal
 	gss_mech_krb5
 	gss_mech_krb5_old
-	gss_mech_krb5_v2
+
 ) ] );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
@@ -45,7 +45,7 @@ GSSAPI::OID - methods for handling GSSAPI OIDs and some constant OIDs
 =head1 SYNOPSIS
 
   use GSSAPI;
-  
+
   #$oid = GSSAPI::OID->new;		# rarely needed or wanted
 
   $status = GSSAPI::OID->from_str($oid, "{ 1 2 840 113554 1 2 1 1 }");
@@ -65,7 +65,10 @@ GSSAPI::OID - methods for handling GSSAPI OIDs and some constant OIDs
   $oid = gss_nt_krb5_principal;
   $oid = gss_mech_krb5;
   $oid = gss_mech_krb5_old;
-  $oid = gss_mech_krb5_v2;
+
+  $oid = gss_nt_hostbased_service; # GSS_C_NT_HOSTBASED_SERVICE
+
+  gss_mech_krb5_v2 is deleted (made the compile of module fail)
 
 
 =head1 DESCRIPTION

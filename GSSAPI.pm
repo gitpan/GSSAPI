@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -250,15 +250,57 @@ GSSAPI - Perl extension providing access to the GSSAPIv2 library
 
 =head1 SYNOPSIS
 
+
   use GSSAPI;
 
-  # lots of complicated stuff here
+  my $targethostname = 'HTTP@moerbsen.grolmsnet.lan';
+  my $status;
+
+
+  TRY: {
+     my $target;
+     $status = GSSAPI::Name->import( $target,
+                                     $targethostname,
+                                     GSSAPI::OID::gss_nt_hostbased_service);
+     last if($status->major != GSS_S_COMPLETE );
+     my $tname;
+     $status = $target->display($tname);
+     last if($status->major != GSS_S_COMPLETE );
+     print "\n using Name $tname";
+
+
+     my $ctx = GSSAPI::Context->new();
+     my $imech = GSSAPI::OID::gss_mech_krb5;
+     my $iflags = 0 ;
+     my $bindings = GSS_C_NO_CHANNEL_BINDINGS;
+     my $creds = GSS_C_NO_CREDENTIAL;
+     my $itime = 0;
+     my $itoken = '';
+     my ($omech, $otoken, $oflags, $otime);
+
+     $status = $ctx->init($creds,$target,$imech,$iflags,$itime,$bindings,$itoken,
+                          $omech,$otoken,$oflags,$otime);
+  }
+
+  unless ($status->major == GSS_S_COMPLETE ) {
+     print "\nErrors:\n";
+     print $status->generic_message(), "\n", $status->specific_message();
+  } else {
+     print "\n seems everything is fine, type klist to see the ticket\n";
+  }
+
 
 =head1 DESCRIPTION
 
 This module gives access to the routines of the GSSAPI library,
 as described in rfc2743 and rfc2744 and implemented by the
 Kerberos-1.2 distribution from MIT.
+
+Since 0.14 it also compiles and works with Heimdal.
+Lacks of Heimdal support are gss_release_oid(),
+gss_str_to_oid() and fail of some tests.
+Have a look test.pl file too see what tests
+fail on Heimdal (test.pl is just skipping them at the moment)
 
 The API presented by this module is a mildly object oriented
 reinterpretation of the C API, where opaque C structures are
@@ -279,6 +321,7 @@ GSSAPI::Status(3p)
 GSSAPI::OID(3p)
 GSSAPI::OID::Set(3p)
 perl(1)
+LWP::Authen::Negotiate
 
 =head2 EXPORT
 
@@ -389,11 +432,42 @@ perl(1)
 
 All other functions are class or instance methods.
 
+
+=head1 SUPPORT
+
+See our project home at <http://perlgssapi.sourceforge.net/>
+
+Mailinglist perlgssapi-users@lists.sourceforge.net
+
 =head1 AUTHOR
 
+The module ist maintained by
+Achim Grolms <perl@grolmsnet.de>
+
+originally written by
 Philip Guenther <pguen@cpan.org>
 
+=head1 THANKS TO
+
+=over
+
+=item Philip Guenther
+
+=item Leif Johansson
+
+=item Merijn Broeren
+
+=item Harald Joerg
+
+=item Christopher Odenbach
+
+=item Dax Kelson
+
+=back
+
 =head1 COPYRIGHT
+
+Copyright (c) 2006 Achim Grolms
 
 Copyright (c) 2000,2001,2005 Philip Guenther. All rights reserved.
 This program is free software; you can redistribute it

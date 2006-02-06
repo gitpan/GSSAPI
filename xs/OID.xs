@@ -12,10 +12,15 @@ DESTROY(oid)
 	GSSAPI::OID	oid
     PREINIT:
 	OM_uint32	minor;
-    CODE:
+    PPCODE:
+#if !defined(HEIMDAL)
 	if (oid != NULL) {
 	    (void)gss_release_oid(&minor, &oid);
 	}
+#endif
+#if defined(HEIMDAL)
+#    warn("gss_release_oid is unsupported and not Part of the API!");
+#endif
 
 GSSAPI::Status
 from_str(class, oid, str)
@@ -23,7 +28,12 @@ from_str(class, oid, str)
 	GSSAPI::OID_out	oid
 	gss_buffer_str	str
     CODE:
+#if !defined(HEIMDAL)
 	RETVAL.major = gss_str_to_oid(&RETVAL.minor, &str, &oid);
+#endif
+#if defined(HEIMDAL)
+	croak("gss_str_to_oid() is not defined in Heimdal API!");
+#endif
     OUTPUT:
 	RETVAL
 	oid
@@ -37,7 +47,12 @@ to_str(oid, str)
 	    sv_setsv_mg(ST(1), &PL_sv_undef);
 	    XSRETURN_UNDEF;
 	}
+#if !defined(HEIMDAL)
 	RETVAL.major = gss_oid_to_str(&RETVAL.minor, oid, &str);
+#endif
+#if defined(HEIMDAL)
+	croak("gss_oid_to_str() is not defined in Heimdal API!");
+#endif
     OUTPUT:
 	RETVAL
 	str
@@ -96,12 +111,12 @@ gss_nt_exported_name()
 GSSAPI::OID_const
 gss_nt_service_name_v2()
     CODE:
-	RETVAL = gss_nt_service_name_v2;
+	RETVAL = gss_nt_service_name;
     OUTPUT:
 	RETVAL
 
 
-#	
+#
 #	Kerberos OIDs
 #
 
@@ -132,10 +147,21 @@ gss_mech_krb5_old()
 	RETVAL = gss_mech_krb5_old;
     OUTPUT:
 	RETVAL
+# Achim Grolms, 2006-02-04
+# deleted this function, it makes the compile
+# fail, I don't know if this function is useful
+#
+
+#GSSAPI::OID_const
+#gss_mech_krb5_v2()
+#    CODE:
+#	RETVAL = gss_mech_krb5_v2;
+#    OUTPUT:
+#	RETVAL
 
 GSSAPI::OID_const
-gss_mech_krb5_v2()
-    CODE:
-	RETVAL = gss_mech_krb5_v2;
-    OUTPUT:
-	RETVAL
+gss_nt_hostbased_service()
+     CODE:
+        RETVAL = GSS_C_NT_HOSTBASED_SERVICE;
+     OUTPUT:
+        RETVAL

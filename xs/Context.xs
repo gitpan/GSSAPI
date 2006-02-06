@@ -12,9 +12,14 @@ DESTROY(context)
 	GSSAPI::Context_opt	context
     PREINIT:
 	OM_uint32		minor;
+	OM_uint32		major;
     CODE:
 	if (context != NULL) {
-	    gss_delete_sec_context(&minor, &context, GSS_C_NO_BUFFER);
+
+	    major = gss_delete_sec_context(&minor, &context, GSS_C_NO_BUFFER);
+	    if ( major != GSS_S_COMPLETE) {
+	       warn("failed gss_delete_sec_context() module Context.xs");
+	    }
 	}
 
 GSSAPI::Status

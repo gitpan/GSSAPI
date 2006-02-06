@@ -70,17 +70,26 @@ gss_mech_set_krb5_both()
     OUTPUT:
 	RETVAL
 
-GSSAPI::OID::Set_const
-gss_mech_set_krb5_v2()
-    CODE:
-	RETVAL = gss_mech_set_krb5_v2;
-    OUTPUT:
-	RETVAL
+# Achim Grolms, 2006-02-04
+# deleted this function, it makes the compile
+# fail, I don't know if this function is useful
+#
 
-GSSAPI::OID::Set_const
-gss_mech_set_krb5_v1v2()
-    CODE:
-	RETVAL = gss_mech_set_krb5_v1v2;
-    OUTPUT:
-	RETVAL
+#GSSAPI::OID::Set_const
+#gss_mech_set_krb5_v2()
+#    CODE:
+#	RETVAL = gss_mech_set_krb5_v2;
+#    OUTPUT:
+#	RETVAL
+
+# Achim Grolms, 2006-02-04
+# deleted this function, it makes the compile
+# fail, I don't know if this function is useful
+#
+#GSSAPI::OID::Set_const
+#gss_mech_set_krb5_v1v2()
+#    CODE:
+#	RETVAL = gss_mech_set_krb5_v1v2;
+#    OUTPUT:
+#	RETVAL
 

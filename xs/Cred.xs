@@ -101,3 +101,21 @@ inquire_cred_by_mech(cred, mech, name, init_lifetime, acc_lifetime, cred_usage)
 	init_lifetime
 	acc_lifetime
 	cred_usage
+
+# 2006-02-06
+# addeed destructor, thanks to Merijn Broeren!
+#
+void
+DESTROY(cred)
+        GSSAPI::Cred_opt     cred
+    PREINIT:
+        OM_uint32               minor;
+	OM_uint32		major;
+    CODE:
+        if (cred != NULL) {
+            major = gss_release_cred(&minor, &cred);
+	    if ( major != GSS_S_COMPLETE) {
+	       warn("failed gss_release_cred() module Cred.xs");
+	    }
+        }
+
