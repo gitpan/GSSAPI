@@ -1,4 +1,4 @@
-GSSAPI Perlbindings version 0.14
+GSSAPI Perlbindings version 0.15
 =================================
 GSSAPI - Perl extension for using
 GSSAPI RfC RFC 2744  from Implementations like MIT Kerberos
@@ -24,10 +24,17 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-  An installed Verions of GSS-API bindings like MIT-Kerberos or Heimdal,
+  An installed Version of GSS-API bindings like MIT-Kerberos or Heimdal,
   visit
   MIT Kerberos <http://web.mit.edu/kerberos/www/>
   Heimdal      <http://www.pdc.kth.se/heimdal/>
+
+Make sure the krb5-config command is present,
+Makefile.PL needs it to detect the library configuration.
+
+(NetBSD: since 2006-01-26 krb5-config is present
+ in pkgsrc/security/heimdal, see
+ <http://mail-index.netbsd.org/pkgsrc-changes/2006/01/26/0036.html>)
 
 
 INSTALLATION
@@ -45,6 +52,16 @@ run
 
 to see further install options
 
+PLATFORMS
+
+Building the module was tested on
+
+-Linux (Gentoo, Ubuntu, Suse, Fedora, RHEL)
+-FreeBSD
+-cygwin
+-Solaris
+
+Please let my know if your Platform needs support.
 
 AUTHOR:
 
@@ -58,7 +75,7 @@ with help from
 
 <http://perlgssapi.sourceforge.net/>
 
-GSSAPI is originally written by Philip Geunther
+GSSAPI is originally written by Philip Guenther
 
 COPYRIGHT AND LICENCE
 

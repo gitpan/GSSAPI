@@ -52,4 +52,7 @@ Revision history for Perl extension GSSAPI.
 	 this fixes (hopefully) http://rt.cpan.org/Public/Bug/Display.html?id=5681
 	 Just grep the file for "Merijn", I've marked the sections
 	-Added destructor to Cred.xs (Thanks Merijn!)
-
+0.15
+	-added options (2) (3) (4) to Makefile.PL
+	 to make the configuration more flexible
+	 (if needed). Thanks Merijn!

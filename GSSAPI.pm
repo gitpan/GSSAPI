@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -313,15 +313,6 @@ All users of this module are therefore strongly advised to
 localize all usage of these routines to minimize pain if and
 when the API changes.
 
-=head1 SEE ALSO
-
-RFC2743
-RFC2744
-GSSAPI::Status(3p)
-GSSAPI::OID(3p)
-GSSAPI::OID::Set(3p)
-perl(1)
-LWP::Authen::Negotiate
 
 =head2 EXPORT
 
@@ -432,6 +423,16 @@ LWP::Authen::Negotiate
 
 All other functions are class or instance methods.
 
+=head1 SEE ALSO
+
+RFC2743
+RFC2744
+GSSAPI::Status(3p)
+GSSAPI::OID(3p)
+GSSAPI::OID::Set(3p)
+perl(1)
+LWP::Authen::Negotiate
+
 
 =head1 SUPPORT
 
@@ -467,7 +468,9 @@ Philip Guenther <pguen@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2006 Achim Grolms
+Copyright (c) 2006 Achim Grolms All rights reserved.
+This program is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.
 
 Copyright (c) 2000,2001,2005 Philip Guenther. All rights reserved.
 This program is free software; you can redistribute it
