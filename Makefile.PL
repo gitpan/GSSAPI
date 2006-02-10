@@ -3,6 +3,8 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 use strict;
 
+use Config;
+
 use Getopt::Long;
 my %options;
 
@@ -44,10 +46,10 @@ for adjusting:
   The exact location of the header files.
 
 (4) --gssapi_lddlflags='-shared -Wl,--enable-new-dtags -Wl,-rpath -Wl/bla/local/mitkrb/lib'
-  Allows for any flags to be passed to the linker, for instance if WriteMakefile ignores 
+  Allows for any flags to be passed to the linker, for instance if WriteMakefile ignores
   entries in LIBS.
 
-Option (1) is preferred, use (2),(3) and (4) only if needed and you know what you 
+Option (1) is preferred, use (2),(3) and (4) only if needed and you know what you
 are doing. If any of (2),(3) or (4) is supplied, (1) will be ignored.
 
 HELP
@@ -78,7 +80,8 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
 	die 'if options gssapi_libs or gssapi_lddlflags are provided, then gssapi_inc must be as well';
     }
     if ($options{gssapi_lddlflags}) {
-	push @LDDLFLAGS, 'LDDLFLAGS', $options{gssapi_lddlflags}
+	push @LDDLFLAGS, 'LDDLFLAGS',
+	                 join ' ', $Config{lddlflags}, $options{gssapi_lddlflags};
     }
 } else {
     print "\n Searching krb5-config command...";
@@ -96,8 +99,23 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
     unless ($libconf) {
        die "$krb5cmd does not respond libconf!";
     } else {
-      push @GSSLIBS, $libconf ;
+      my ($gsslibs, $otherparm) = find_libs_in_krb5config_string( $libconf  );
 
+      #
+      # LIBS accepts only -L and -l flags and ignores others.
+      # but we need them at linktime!
+      # so all the output of krb5-config --libs gssapi
+      # has to be passed into LDDLFLAGS,
+      # und only -L and -l params to LIBS (to avoid warnings)
+      # <http://sourceforge.net/mailarchive/forum.php?thread_id=9655729&forum_id=47637>
+      #
+      if ( @{$otherparm} > 0 ) {
+         my $lddflagstring = join ' ', $Config{lddlflags},  @{$otherparm};
+         print "\n Using LDDLFLAGS \n $lddflagstring \n";
+         push @LDDLFLAGS, 'LDDLFLAGS', $lddflagstring ,
+      }
+      #--------------------------------------
+      push @GSSLIBS,  join ' ', @{$gsslibs};
     }
 
     #---------------------------------------------------------------
@@ -115,15 +133,15 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
        push @EXTRADEFINES,  '-DHEIMDAL';
        print "Setting Heimdal Defines\n";
     } else {
-       print "Setting MIT defines\n";
+       print "\nSetting MIT defines\n";
     }
 }
 
 
 #--------------------------------------------------------------
-print "\n Using libconfiguration\n", @GSSLIBS;
-print "\n Using includeconfiguration\n", $incconf;
-print "\n using own defines \n", @EXTRADEFINES, "\n";
+print "\n Using LIBS\n", @GSSLIBS, "\n",
+      "\n Using includeconfiguration\n", $incconf,
+      "\n using own defines \n", @EXTRADEFINES, "\n";
 #--------------------------------------------------------------
 
 
@@ -199,3 +217,18 @@ sub is_heimdal {
    return $r;
 }
 #-------------------------------------------------
+
+sub find_libs_in_krb5config_string {
+   my ( $confstringstring ) = @_;
+   my (@libs, @others);
+   foreach ( split ' ',  $confstringstring ) {
+      if ( m/(-(Wl,-R|[LlR])[^ ]*)/) {
+        push @libs, $1
+      } else {
+        push @others, $_;
+      }
+   }
+   return (\@libs, \@others);
+}
+#-------------------------------------------------
+

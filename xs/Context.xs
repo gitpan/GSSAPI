@@ -17,8 +17,8 @@ DESTROY(context)
 	if (context != NULL) {
 
 	    major = gss_delete_sec_context(&minor, &context, GSS_C_NO_BUFFER);
-	    if ( major != GSS_S_COMPLETE) {
-	       warn("failed gss_delete_sec_context() module Context.xs");
+	    if ( major == GSS_S_FAILURE) {
+	       warn("failed gss_delete_sec_context(), GSS_S_FAILURE, module Context.xs");
 	    }
 	}
 

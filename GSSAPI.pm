@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -313,6 +313,136 @@ All users of this module are therefore strongly advised to
 localize all usage of these routines to minimize pain if and
 when the API changes.
 
+=head1 USAGE
+
+This module wraps the GSSAPI C-Bindings. If you are
+new to GSSAPI it is a good idea to read RFC2743 and RFC2744,
+the documentation requires you to be familar with the concept
+and the wordings of GSSAPI programming.
+
+
+=head2 GSSAPI::Name
+
+GSSAPI internal representation of principalname
+
+=head3 Methods
+
+=over
+
+=item import( $gssapinameobj, $servicename, $mechnism_oid );
+
+converts stringrepresentation $servicename of service into a GSSAPI internal format
+and stores it in $gssapiservicename.
+
+
+
+=over
+
+=item input
+
+=over
+
+=item servicename
+
+Scalar value, like 'HTTP@moerbsen.grolmsnet.lan'.
+
+=item mechnism_oid
+
+Chose one of the predefines mechanism OIDs from GSSAPI::OID
+
+=back
+
+=item output
+
+=over
+
+=item $gssapinameobj
+
+GSSAPI internal representation of servicename
+
+=back
+
+=item return value
+
+returns GSSAPI::Status Object
+
+=item Example:
+
+     $status = GSSAPI::Name->import( $gssapinameobj,
+                                     'HTTP@moerbsen.grolmsnet.lan',
+                                     GSSAPI::OID::gss_nt_hostbased_service);
+
+=back
+
+=item display($tname);
+
+converts the GSSAPI internal format into a humanreadable string and stores it into $tname.
+
+=over
+
+=item output
+
+humanreadable string will be stored into $tname.
+
+=item return value
+
+returns GSSAPI::Status Object
+
+=item Example:
+
+     my $tname;
+     $status = $gssapinameobj->display($tname);
+     die 'hmm, error...' if($status->major != GSS_S_COMPLETE );
+     print "\n  Name is $tname";
+
+=back
+
+
+=item compare( nameobj, ret)
+
+Wraps gss_compare_name().
+
+=over
+
+=item Input
+
+=over
+
+=item nameobj
+
+the 2nd GSSAPI::Name to be compared to
+
+=back
+
+
+=item output
+
+=over
+
+=item ret
+
+=over
+
+=item value is non-zero
+
+names refer to same entity
+
+=item value is zero
+
+names refer to different entities.
+
+=back
+
+=back
+
+=item return value
+
+returns GSSAPI::Status Object
+
+=back
+
+=back
+
 
 =head2 EXPORT
 
@@ -433,6 +563,9 @@ GSSAPI::OID::Set(3p)
 perl(1)
 LWP::Authen::Negotiate
 
+=head1 BUGS
+
+More documentation how to use the module has to be added.
 
 =head1 SUPPORT
 
