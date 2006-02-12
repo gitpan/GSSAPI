@@ -49,26 +49,26 @@ contains(oidset, oid, isthere)
 #	Kerberos OID_sets
 #
 
-GSSAPI::OID::Set_const
-gss_mech_set_krb5()
-    CODE:
-	RETVAL = gss_mech_set_krb5;
-    OUTPUT:
-	RETVAL
+#GSSAPI::OID::Set_const
+#gss_mech_set_krb5()
+#    CODE:
+#	RETVAL = gss_mech_set_krb5;
+#    OUTPUT:
+#	RETVAL
 
-GSSAPI::OID::Set_const
-gss_mech_set_krb5_old()
-    CODE:
-	RETVAL = gss_mech_set_krb5_old;
-    OUTPUT:
-	RETVAL
+#GSSAPI::OID::Set_const
+#gss_mech_set_krb5_old()
+#    CODE:
+#	RETVAL = gss_mech_set_krb5_old;
+#    OUTPUT:
+#	RETVAL
 
-GSSAPI::OID::Set_const
-gss_mech_set_krb5_both()
-    CODE:
-	RETVAL = gss_mech_set_krb5_both;
-    OUTPUT:
-	RETVAL
+#GSSAPI::OID::Set_const
+#gss_mech_set_krb5_both()
+#    CODE:
+#	RETVAL = gss_mech_set_krb5_both;
+#    OUTPUT:
+#	RETVAL
 
 # Achim Grolms, 2006-02-04
 # deleted this function, it makes the compile

@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.16';
+our $VERSION = '0.17';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -100,6 +100,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 	GSS_S_UNAUTHORIZED
 	GSS_S_UNAVAILABLE
 	GSS_S_UNSEQ_TOKEN
+	indicate_mechs
 ) ] );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
@@ -320,6 +321,28 @@ new to GSSAPI it is a good idea to read RFC2743 and RFC2744,
 the documentation requires you to be familar with the concept
 and the wordings of GSSAPI programming.
 
+the examples directory holds some working examples of usage:
+
+=over
+
+=item getcred_hostbased.pl
+
+gets a GSSAPI Token for a service specified
+on commandline.
+(like kgetcred on Heimdal or kvno on MIT)
+
+=item gss-client.pl
+
+a simple GSSAPI TCP client.
+
+=item gss-server.pl
+
+a simple GSSAPI TCP server.
+Use both as templates if you need quickhacking
+GSSAPI enabeled GSSAPI TCP services.
+
+=back
+
 
 =head2 GSSAPI::Name
 
@@ -531,6 +554,29 @@ returns GSSAPI::Status Object
 
     $status = indicate_mechs($oidset)
 
+Example
+
+   use GSSAPI qw(:all);
+
+   my $oidset;
+   my $isin = 0;
+
+   my $status = indicate_mechs( $oidset );
+   $status->major == GSS_S_COMPLETE || die 'error';
+
+   $status = $oidset->contains( gss_mech_krb5_old, $isin );
+   $status->major == GSS_S_COMPLETE || die 'error';
+
+   if ( $isin ) {
+     print 'Support of Kerberos 5 old mechtype';
+   } else {
+     print 'No Support of Kerberos 5 old mechtype';
+   }
+
+
+=head3 Constant OIDs provided:
+
+
     # Constant OIDs provided:
     $oid = gss_nt_user_name;
     $oid = gss_nt_machine_uid_name;
@@ -542,14 +588,8 @@ returns GSSAPI::Status Object
     $oid = gss_nt_krb5_principal;
     $oid = gss_mech_krb5;
     $oid = gss_mech_krb5_old;
-    $oid = gss_mech_krb5_v2;
+    $oid = gss_mech_spnego;
 
-    # Constant OID sets provided:
-    $oidset = gss_mech_set_krb5;
-    $oidset = gss_mech_set_krb5_old;
-    $oidset = gss_mech_set_krb5_both;
-    $oidset = gss_mech_set_krb5_v2;
-    $oidset = gss_mech_set_krb5_v1v2;
 
 All other functions are class or instance methods.
 

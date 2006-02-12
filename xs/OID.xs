@@ -14,7 +14,10 @@ DESTROY(oid)
 	OM_uint32	minor;
     PPCODE:
 #if !defined(HEIMDAL)
-	if (oid != NULL) {
+	if (oid != NULL &&
+	    oid != __KRB5_MECHTYPE_OID &&
+	    oid != __KRB5_OLD_MECHTYPE_OID &&
+	    oid != __SPNEGO_MECHTYPE_OID ) {
 	    (void)gss_release_oid(&minor, &oid);
 	}
 #endif
@@ -76,42 +79,42 @@ inquire_names(oid, oidset)
 GSSAPI::OID_const
 gss_nt_user_name()
     CODE:
-	RETVAL = gss_nt_user_name;
+	RETVAL = GSS_C_NT_USER_NAME;
     OUTPUT:
 	RETVAL
 
 GSSAPI::OID_const
 gss_nt_machine_uid_name()
     CODE:
-	RETVAL = gss_nt_machine_uid_name;
+	RETVAL = GSS_KRB5_NT_MACHINE_UID_NAME;
     OUTPUT:
 	RETVAL
 
 GSSAPI::OID_const
 gss_nt_string_uid_name()
     CODE:
-	RETVAL = gss_nt_string_uid_name;
+	RETVAL =  GSS_C_NT_STRING_UID_NAME;
     OUTPUT:
 	RETVAL
 
 GSSAPI::OID_const
 gss_nt_service_name()
     CODE:
-	RETVAL = gss_nt_service_name;
+	RETVAL = GSS_C_NT_HOSTBASED_SERVICE;
     OUTPUT:
 	RETVAL
 
 GSSAPI::OID_const
 gss_nt_exported_name()
     CODE:
-	RETVAL = gss_nt_exported_name;
+	RETVAL = GSS_C_NT_EXPORT_NAME;
     OUTPUT:
 	RETVAL
 
 GSSAPI::OID_const
 gss_nt_service_name_v2()
     CODE:
-	RETVAL = gss_nt_service_name;
+	RETVAL = GSS_C_NT_HOSTBASED_SERVICE;
     OUTPUT:
 	RETVAL
 
@@ -123,28 +126,35 @@ gss_nt_service_name_v2()
 GSSAPI::OID_const
 gss_nt_krb5_name()
     CODE:
-	RETVAL = gss_nt_krb5_name;
+	RETVAL = GSS_KRB5_NT_USER_NAME;
     OUTPUT:
 	RETVAL
 
 GSSAPI::OID_const
 gss_nt_krb5_principal()
     CODE:
-	RETVAL = gss_nt_krb5_principal;
+	RETVAL = GSS_KRB5_NT_PRINCIPAL_NAME;
     OUTPUT:
 	RETVAL
 
 GSSAPI::OID_const
 gss_mech_krb5()
     CODE:
-	RETVAL = gss_mech_krb5;
+	RETVAL = __KRB5_MECHTYPE_OID;
+    OUTPUT:
+	RETVAL
+
+GSSAPI::OID_const
+gss_mech_spnego()
+    CODE:
+	RETVAL = __SPNEGO_MECHTYPE_OID;
     OUTPUT:
 	RETVAL
 
 GSSAPI::OID_const
 gss_mech_krb5_old()
     CODE:
-	RETVAL = gss_mech_krb5_old;
+	RETVAL = __KRB5_OLD_MECHTYPE_OID;
     OUTPUT:
 	RETVAL
 # Achim Grolms, 2006-02-04

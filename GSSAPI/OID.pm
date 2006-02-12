@@ -22,6 +22,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 	gss_nt_krb5_principal
 	gss_mech_krb5
 	gss_mech_krb5_old
+	gss_mech_spnego
 
 ) ] );
 
@@ -49,8 +50,14 @@ GSSAPI::OID - methods for handling GSSAPI OIDs and some constant OIDs
   #$oid = GSSAPI::OID->new;		# rarely needed or wanted
 
   $status = GSSAPI::OID->from_str($oid, "{ 1 2 840 113554 1 2 1 1 }");
+  #
+  # only supported on MIT Kerberos
+  #
 
   $status = $oid->to_str($str);
+  #
+  # only supported on MIT Kerberos
+  #
 
   $status = $oid->inquire_names($oidset);
 
@@ -66,9 +73,17 @@ GSSAPI::OID - methods for handling GSSAPI OIDs and some constant OIDs
   $oid = gss_mech_krb5;
   $oid = gss_mech_krb5_old;
 
-  $oid = gss_nt_hostbased_service; # GSS_C_NT_HOSTBASED_SERVICE
+  $oid = gss_mech_spnego;
 
-  gss_mech_krb5_v2 is deleted (made the compile of module fail)
+  # if your GSSAPI implementation supports
+  # SPNEGO (Heimdal 0.7 for example
+  # you can  use mechtype OID::gss_mech_spnego.
+  #
+  # use GSSAPI::indicate_mechs( $oidset );
+  # to get the of mechtypes your implementation supports
+
+
+  $oid = gss_nt_hostbased_service; # GSS_C_NT_HOSTBASED_SERVICE
 
 
 =head1 DESCRIPTION
@@ -82,6 +97,9 @@ routine in rfc2743 if you're not sure.
 
 =head1 AUTHOR
 
+maintained by Achim Grolms <perl@grolmsnet.de>
+
+originally written by
 Philip Guenther <pguen@cpan.org>
 
 =head1 SEE ALSO

@@ -61,3 +61,16 @@ Revision history for Perl extension GSSAPI.
 	-Makefile.PL passes all the (needed!) krb5-config --libs gssapi stuff that is
 	ignored by LIBS to LDDLFLGAS
 	-Tried to add userdocumentation to GSSAPI.pm (GSSAPI::Name)
+0.17	So Feb 12 21:52:41 CET 2006
+	-use of uppercase GSS_ style import-constants instead of lowercase
+	 gss_ constants. Hope this does not break things, please
+	 let me know if that means problems on you platform!
+	-deleted mechtype sets gss_mech_set_krb5,
+	gss_mech_set_krb5_old, gss_mech_set_krb5_both, gss_mech_set_krb5.
+	Please let me know if that breaks your code and needs to be fixed!
+	-added example gss-client.pl and gss-server.pl
+	(Thanks Merijn!)
+	-added SPNEGO Mechttype to OID.xs
+	-made the test.pl list available Mechtypes
+	-added indicate_mechs Example to POD
+

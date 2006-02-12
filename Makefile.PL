@@ -9,7 +9,7 @@ use Getopt::Long;
 my %options;
 
 my @whichcand = qw(/bin/which /usr/bin/which);
-
+my $LINE = "\n\n----------------------------------------------------------\n";
 &GetOptions(\%options , "gssapiimpl=s",  "help", "gssapi_libs=s", "gssapi_inc=s", "gssapi_lddlflags=s");
 
 open(MANIFEST, "MANIFEST")	or die "$0: Unable to open MANIFEST: $!";
@@ -80,20 +80,24 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
 	die 'if options gssapi_libs or gssapi_lddlflags are provided, then gssapi_inc must be as well';
     }
     if ($options{gssapi_lddlflags}) {
+	if ( $Config{lddlflags} ) {
+	    print "$LINE Adding from your Perlinstallation (\$Config{lddlflags}) to LDDLFLAGS \n",
+	          $Config{lddlflags};
+        }
 	push @LDDLFLAGS, 'LDDLFLAGS',
 	                 join ' ', $Config{lddlflags}, $options{gssapi_lddlflags};
     }
 } else {
-    print "\n Searching krb5-config command...";
+    print $LINE, ' Searching krb5-config command... ';
     my $krb5cmd = find_krb5config_cmd($options{'gssapiimpl'} );
     unless ($krb5cmd) {
 	die 'not found!';
     } else {
-      print $krb5cmd ;
+      print "\n\n $krb5cmd";
     }
     #---------------------------------------------
     my $implementation = krb5_version( $krb5cmd  );
-    print "\n using GSSAPI implementation ", $implementation;
+    print $LINE, " using GSSAPI implementation \n $implementation";
     #---------------------------------------------
     my $libconf =  krb5_libconfig( $krb5cmd );
     unless ($libconf) {
@@ -111,8 +115,13 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
       #
       if ( @{$otherparm} > 0 ) {
          my $lddflagstring = join ' ', $Config{lddlflags},  @{$otherparm};
-         print "\n Using LDDLFLAGS \n $lddflagstring \n";
-         push @LDDLFLAGS, 'LDDLFLAGS', $lddflagstring ,
+	 if ( $Config{lddlflags} ) {
+	    print $LINE,
+	          ' Adding from your Perlinstallation ($Config{lddlflags}) to LDDLFLAGS', "\n\n ",
+	          $Config{lddlflags};
+         }
+         print $LINE, " Bypassing to LDDLFLAGS \n\n $lddflagstring";
+         push @LDDLFLAGS, 'LDDLFLAGS', $lddflagstring ;
       }
       #--------------------------------------
       push @GSSLIBS,  join ' ', @{$gsslibs};
@@ -131,17 +140,22 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
     #---------------------------------------------------------------
     if ( is_heimdal($krb5cmd) ) {
        push @EXTRADEFINES,  '-DHEIMDAL';
-       print "Setting Heimdal Defines\n";
-    } else {
-       print "\nSetting MIT defines\n";
+       #print $LINE, ' Setting Heimdal Defines';
     }
+    #
+    # Reading this at configuration Time is boring
+    #
+    #else {
+    #   print $LINE, ' Setting MIT defines';
+    #}
 }
 
 
 #--------------------------------------------------------------
-print "\n Using LIBS\n", @GSSLIBS, "\n",
-      "\n Using includeconfiguration\n", $incconf,
-      "\n using own defines \n", @EXTRADEFINES, "\n";
+print "$LINE Adding own DEFINEs \n\n @EXTRADEFINES" if( scalar(@EXTRADEFINES) );
+print "$LINE Using LIBS\n\n @GSSLIBS",
+      "$LINE Using INC includeconfiguration\n\n $incconf",
+      $LINE;
 #--------------------------------------------------------------
 
 

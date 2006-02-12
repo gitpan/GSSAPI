@@ -5,7 +5,7 @@ use strict;
 use ExtUtils::testlib;
 
 use GSSAPI qw(:all);
-use Test::More tests => 44;
+use Test::More tests => 56;
 
 
 ok( 1 == 1 , 'Dummy (1 == 1, should never fail.)' );
@@ -88,7 +88,10 @@ SKIP:
 $status = gss_mech_krb5->inquire_names($oidset);
 ok(ref $status eq 'GSSAPI::Status', q{ref $status eq 'GSSAPI::Status'});
 ok($status, 'gss_mech_krb5->inquire_names($oidset);');
+
+
 undef $oidset;
+
 
 
 #
@@ -110,11 +113,42 @@ $oidset = GSSAPI::OID::Set->new();
     ok($status, '$oidset->contains(gss_nt_exported_name, $isin)');
     ok(! $isin, '! $isin');
 
-eval {
-	$status = gss_mech_set_krb5->insert(gss_nt_user_name);
-};
-ok( $@ =~ /is not alterable/,
-    'gss_mech_set_krb5->insert(gss_nt_user_name); is not alterable' );
+    $status= $oidset->contains( gss_mech_krb5_old, $isin );
+
+    ok($status, '$oidset->contains( gss_mech_krb5_old , $isin)');
+    ok(! $isin, '! gss_mech_krb5_old is not in');
+
+    $status = $oidset->insert( gss_mech_krb5_old );
+    ok($status, ' $oidset->insert( gss_mech_krb5_old );');
+
+    $status= $oidset->contains( gss_mech_krb5_old, $isin );
+
+    ok($status, '$oidset->contains( gss_mech_krb5_old , $isin)');
+    ok( $isin, ' gss_mech_krb5_old is in');
+
+
+    $status= $oidset->contains( gss_mech_spnego, $isin );
+    ok($status, '$oidset->contains( gss_mech_spnego , $isin)');
+    ok( ! $isin, ' gss_mech_spnego is not in');
+
+    $status= $oidset->insert( gss_mech_spnego );
+    ok($status, '$oidset->inserts( gss_mech_spnego )');
+
+    $status= $oidset->contains( gss_mech_spnego, $isin );
+
+    ok($status, q{ $oidset->contains( gss_mech_spnego, $isin ) });
+    ok(  $isin, ' gss_mech_spnego is in');
+
+    #$status= $oidset->contains( gss_mech_spnego, $isin );
+    #$status= $oidset->insert( '  $status= $oidset->contains( gss_mech_spnego, $isin ); ');
+    #ok(  $isin, ' gss_mech_spnego is in');
+
+
+#eval {
+#	$status = gss_mech_set_krb5->insert(gss_nt_user_name);
+#};
+#ok( $@ =~ /is not alterable/,
+#    'gss_mech_set_krb5->insert(gss_nt_user_name); is not alterable' );
 
 #
 #	GSSAPI::Binding
@@ -191,6 +225,11 @@ ok( $@ =~ /is not alterable/,
 
     $status = GSSAPI::Cred::acquire_cred(undef, 120, undef, GSS_C_INITIATE,
 				$cred1, $oidset, $time);
+
+SKIP: {
+    if ( $status->major != GSS_S_COMPLETE ) {
+        skip( 'This tests only work if user has run kinit succesfully', 6 );
+    }
     ok($status, 'GSSAPI::Cred::acquire_cred');
     ok(ref $cred1 eq "GSSAPI::Cred");
     ok(ref $oidset eq "GSSAPI::OID::Set");
@@ -205,17 +244,6 @@ ok( $@ =~ /is not alterable/,
     ok(ref $oidset eq "GSSAPI::OID::Set");
     ok($cred_usage & GSS_C_INITIATE);
 
-SKIP: {
-   if (GSSAPI::gssapi_implementation_is_heimdal() ) {
-      skip(q{"$time == $lifetime" test fails on Heimdal, I don't know if that is a problem}, 1);
-   }
-   # 2006-04-06
-   # I don't know what is the meaning of the fail on Hemidal
-   # If you know - pleas send Email to perl@grolmnsnet.de
-   # Thank you!
-   #
-   #
-   ok($time == $lifetime, '$time == $lifetime');
 }
 
 #--------------------------------------------------------
@@ -227,9 +255,31 @@ SKIP: {
    ok ($keystring eq $display, 'check bugfix of <http://rt.cpan.org/Public/Bug/Display.html?id=5681>');
 }
 #--------------------------------------------------------
-print "\n\n if you want to run tests that do a realworld *use* of your GSSAPI";
-print "\n start a kinit and try to run";
-print "\n./examples/getcred_hostbased.pl \n\n";
+
+{
+  my $oidset;
+  my $isin = 0;
+  my $supportresponse;
+  my $status = GSSAPI::indicate_mechs( $oidset );
+  ok ( $status, q{ GSSAPI::indicate_mechs( $oidset ) } );
+
+  $status = $oidset->contains( gss_mech_krb5_old, $isin );
+  $supportresponse = $isin ? ' supports KRB5 old Mechtype' :  ' does not support KRB5 old Mechtype';
+  ok ( $status, q{ $oidset->contains( gss_mech_krb5_old, $isin ) - implementation } . $supportresponse );
+
+
+  $status = $oidset->contains( gss_mech_krb5, $isin );
+  $supportresponse = $isin ? ' supports Kerberos 5' :  ' does not support Kerberos 5';
+  ok ( $status, q{ $oidset->contains( gss_mech_krb5, $isin ) - implementation } . $supportresponse );
+
+  $status = $oidset->contains( gss_mech_spnego, $isin );
+  $supportresponse = $isin ? ' supports SPNEGO' :  ' does not support SPNEGO';
+  ok ( $status, q{ $oidset->contains( gss_mech_spnego, $isin ) - implementation } . $supportresponse );
+
+}
+print "\n\n if you want to run tests that do a realworld *use* of your GSSAPI",
+      "\n start a kinit and try to run",
+      "\n./examples/getcred_hostbased.pl \n\n";
 
 #-------------------------------------------------------------
 

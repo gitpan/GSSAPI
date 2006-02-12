@@ -1,50 +1,25 @@
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
-/* #include "/src/admin/kerberos/krb5-1.2.1-local/src/lib/gssapi/krb5/gssapiP_krb5.h" */
 
+#define __KRB5_MECHTYPE_OID &mygss_mech_krb5
+#define __KRB5_OLD_MECHTYPE_OID &mygss_mech_krb5_old
+#define __SPNEGO_MECHTYPE_OID &myspnego_oid_desc
 
 #if defined(HEIMDAL)
 #include <gssapi.h>
-
-#define gss_nt_user_name GSS_C_NT_USER_NAME
-#define gss_nt_machine_uid_name GSS_KRB5_NT_MACHINE_UID_NAME
-#define gss_nt_string_uid_name GSS_C_NT_STRING_UID_NAME
-#define gss_nt_krb5_principal GSS_KRB5_NT_PRINCIPAL_NAME
-#define gss_nt_krb5_name GSS_KRB5_NT_USER_NAME
-#define gss_nt_service_name GSS_C_NT_HOSTBASED_SERVICE
-#define gss_nt_exported_name GSS_C_NT_EXPORT_NAME
 #endif
 
 #if !defined(HEIMDAL)
+
 #include <gssapi/gssapi_generic.h>
 #include <gssapi/gssapi_krb5.h>
 #endif
 
-#if defined(HEIMDAL)
-
-#define gss_mech_krb5  GSS_KRB5_MECHANISM
-
 static gss_OID_desc  mygss_mech_krb5  = {9, (void *) "\x2a\x86\x48\x86\xf7\x12\x01\x02\x02"};
-
-
-
-
-
 static gss_OID_desc  mygss_mech_krb5_old  = {5, (void *) "\x2b\x05\x01\x05\x02"};
-static gss_OID_desc* gss_mech_krb5_old = &mygss_mech_krb5_old;
 
-static gss_OID_set_desc mygss_mech_set_krb5 = { 1, &mygss_mech_krb5 };
-static gss_OID_set_desc* gss_mech_set_krb5 = &mygss_mech_set_krb5;
-
-static gss_OID_set_desc mygss_mech_set_krb5_old = { 1, &mygss_mech_krb5_old };
-static gss_OID_set_desc* gss_mech_set_krb5_old = &mygss_mech_set_krb5_old;
-
-static gss_OID_desc* botharray[] = { &mygss_mech_krb5_old, &mygss_mech_krb5 };
-
-static gss_OID_set_desc mygss_mech_set_krb5_both = { 1, &mygss_mech_krb5 };
-static gss_OID_set_desc* gss_mech_set_krb5_both = &mygss_mech_set_krb5_both;
-#endif
+static gss_OID_desc myspnego_oid_desc = {6, (void *) "\x2b\x06\x01\x05\x05\x02"};
 
 
 static double
@@ -1325,20 +1300,7 @@ typedef void *				GSSAPI_obj;
 int
 oid_set_is_dynamic(GSSAPI__OID__Set oidset)
 {
-    return (oidset != (gss_OID_set)gss_mech_set_krb5		&&
-	    oidset != (gss_OID_set)gss_mech_set_krb5_old	&&
-	    oidset != (gss_OID_set)gss_mech_set_krb5_both
-/*
-
-# Achim Grolms, 2006-02-04
-# deleted this function, it makes the compile
-# fail, I don't know if this function is useful
-
-		&&
-	    oidset != (gss_OID_set)gss_mech_set_krb5_v2		&&
-	    oidset != (gss_OID_set)gss_mech_set_krb5_v1v2
-*/
-	    );
+    return 1; /* 2006-02-13 all static sets are deleted */
 }
 
 
