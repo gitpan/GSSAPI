@@ -5,42 +5,11 @@ use strict;
 use ExtUtils::testlib;
 
 use GSSAPI qw(:all);
-use Test::More tests => 56;
+use Test::More tests => 28;
 
 
-ok( 1 == 1 , 'Dummy (1 == 1, should never fail.)' );
-ok( GSSAPI::Status::GSS_ERROR(GSS_S_COMPLETE) == 0,
-   'GSSAPI::Status::GSS_ERROR(GSS_S_COMPLETE) == 0' );
-
-ok( GSSAPI::Status::GSS_ERROR(GSS_S_BAD_SIG) == 1,
-    'GSSAPI::Status::GSS_ERROR(GSS_S_BAD_SIG) == 1' );
-
-my $status = GSSAPI::Status->new(GSS_S_COMPLETE, 0);
-
-ok(ref $status eq "GSSAPI::Status", 'created GSSAPI::Status object');
-
-ok($status->major == GSS_S_COMPLETE, '$status->major == GSS_S_COMPLETE');
-ok($status->minor == 0, '$status->minor == 0');
-ok($status, '$status');
-
-my @string;
-ok(@string = $status->generic_message(),
-             '$status->generic_message(): ' . join '', @string);
-ok(@string = $status->specific_message(),
-             '$status->specific_message(): ' . join '', @string);
-
-my $okay = 1;
-foreach (1 .. 1000) {
-	my($maj, $min);
-	$maj = int(rand(0xffffffff));
-	$min = int(rand(0xffffffff));
-
-	$status = GSSAPI::Status->new($maj, $min);
-
-	$status->major == $maj && $status->minor == $min
-			or $okay = 0, last;
-}
-ok($okay, 'GSSAPI::Status->new($maj, $min) with random values');
+my $status;
+my $okay;
 
 my($name, $name2, $same, $export, $display, $type);
 
@@ -94,61 +63,6 @@ undef $oidset;
 
 
 
-#
-#	GSSAPI::OID::Set
-#
-my $isin = 0;
-
-$oidset = GSSAPI::OID::Set->new();
-    ok(ref $oidset eq "GSSAPI::OID::Set");
-    $status = $oidset->insert(gss_nt_user_name);
-    ok($status, '$oidset->insert(gss_nt_user_name)');
-    $status = $oidset->insert(gss_nt_service_name);
-    ok($status, '$oidset->insert(gss_nt_service_name)');
-
-    $status = $oidset->contains(gss_nt_user_name, $isin);
-    ok($status);
-    ok($isin, '$oidset->contains(gss_nt_user_name, $isin)');
-    $status = $oidset->contains(gss_nt_exported_name, $isin);
-    ok($status, '$oidset->contains(gss_nt_exported_name, $isin)');
-    ok(! $isin, '! $isin');
-
-    $status= $oidset->contains( gss_mech_krb5_old, $isin );
-
-    ok($status, '$oidset->contains( gss_mech_krb5_old , $isin)');
-    ok(! $isin, '! gss_mech_krb5_old is not in');
-
-    $status = $oidset->insert( gss_mech_krb5_old );
-    ok($status, ' $oidset->insert( gss_mech_krb5_old );');
-
-    $status= $oidset->contains( gss_mech_krb5_old, $isin );
-
-    ok($status, '$oidset->contains( gss_mech_krb5_old , $isin)');
-    ok( $isin, ' gss_mech_krb5_old is in');
-
-
-    $status= $oidset->contains( gss_mech_spnego, $isin );
-    ok($status, '$oidset->contains( gss_mech_spnego , $isin)');
-    ok( ! $isin, ' gss_mech_spnego is not in');
-
-    $status= $oidset->insert( gss_mech_spnego );
-    ok($status, '$oidset->inserts( gss_mech_spnego )');
-
-    $status= $oidset->contains( gss_mech_spnego, $isin );
-
-    ok($status, q{ $oidset->contains( gss_mech_spnego, $isin ) });
-    ok(  $isin, ' gss_mech_spnego is in');
-
-    #$status= $oidset->contains( gss_mech_spnego, $isin );
-    #$status= $oidset->insert( '  $status= $oidset->contains( gss_mech_spnego, $isin ); ');
-    #ok(  $isin, ' gss_mech_spnego is in');
-
-
-#eval {
-#	$status = gss_mech_set_krb5->insert(gss_nt_user_name);
-#};
-#ok( $@ =~ /is not alterable/,
-#    'gss_mech_set_krb5->insert(gss_nt_user_name); is not alterable' );
 
 #
 #	GSSAPI::Binding
@@ -246,15 +160,7 @@ SKIP: {
 
 }
 
-#--------------------------------------------------------
-{
-   my ($name, $display);
-   my $keystring = 'chpasswd@mars.gac.edu';
-   my $status = GSSAPI::Name->import($name, $keystring);
-   $status = $name->display($display);
-   ok ($keystring eq $display, 'check bugfix of <http://rt.cpan.org/Public/Bug/Display.html?id=5681>');
-}
-#--------------------------------------------------------
+
 
 {
   my $oidset;

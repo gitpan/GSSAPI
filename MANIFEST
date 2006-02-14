@@ -6,7 +6,7 @@ GSSAPI/OID/Set.pm
 GSSAPI/Status.pm
 MANIFEST
 Makefile.PL
-test.pl
+t/test.t
 typemap
 xs/Binding.xs
 xs/Context.xs
@@ -17,3 +17,9 @@ xs/OID__Set.xs
 xs/Status.xs
 META.yml                                 Module meta-data (added by MakeMaker)
 README
+examples/getcred_hostbased.pl
+examples/gss-client.pl
+examples/gss-server.pl
+t/1status.t
+t/checkoids.t
+t/zbugfixes.t

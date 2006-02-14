@@ -36,41 +36,59 @@ Revision history for Perl extension GSSAPI.
 0.13  Thu Mar 24 10:46:59 2005
 	- Actually document this module as being under the same
 	  license as Perl (how did I miss this?!?)
+
 0.14 Mo Feb  6 18:46:21 CET 2006
-	-Maintanance overtaken by Achim Grolms. Thank you Philip!
-	 our base is
-	 <http://perlgssapi.sourceforge.net/>
-	 -deleted gss_mech_set_krb5_v1v2(), gss_mech_set_krb5_v2()
-	 from OID__Set.xs. It makes the compile fail
-	 -deleted gss_mech_krb5_v2() from OID.xs
-	 -deletd gss_mech_set_krb5_v2, gss_mech_set_krb5_v1v2 from GSSAPI.xs
-	 -gss_str_to_oid() and gss_oid_to_str()
+
+	- Maintanance overtaken by Achim Grolms. Thank you Philip!
+	  our base is
+	  <http://perlgssapi.sourceforge.net/>
+	- deleted gss_mech_set_krb5_v1v2(), gss_mech_set_krb5_v2()
+	  from OID__Set.xs. It makes the compile fail
+	- deleted gss_mech_krb5_v2() from OID.xs
+	- deletd gss_mech_set_krb5_v2, gss_mech_set_krb5_v1v2 from GSSAPI.xs
+	- gss_str_to_oid() and gss_oid_to_str()
 	  are not present in Heimdal implementations.
 	  I've ifdefed them to croak.
 	  Testsuite is adjusted to skip them.
-	-Added patches from Merijn Broeren to typemap file.
-	 this fixes (hopefully) http://rt.cpan.org/Public/Bug/Display.html?id=5681
-	 Just grep the file for "Merijn", I've marked the sections
-	-Added destructor to Cred.xs (Thanks Merijn!)
+	- Added patches from Merijn Broeren to typemap file.
+	  this fixes (hopefully) http://rt.cpan.org/Public/Bug/Display.html?id=5681
+	  Just grep the file for "Merijn", I've marked the sections
+	- Added destructor to Cred.xs (Thanks Merijn!)
 0.15
-	-added options (2) (3) (4) to Makefile.PL
-	 to make the configuration more flexible
-	 (if needed). Thanks Merijn!
-0.16	-changed Context.xs Destructor to warn only on GSS_S_FAILURE
-	(see <http://sourceforge.net/mailarchive/forum.php?thread_id=9674417&forum_id=47637>)
-	-Makefile.PL passes all the (needed!) krb5-config --libs gssapi stuff that is
-	ignored by LIBS to LDDLFLGAS
-	-Tried to add userdocumentation to GSSAPI.pm (GSSAPI::Name)
-0.17	So Feb 12 21:52:41 CET 2006
-	-use of uppercase GSS_ style import-constants instead of lowercase
-	 gss_ constants. Hope this does not break things, please
-	 let me know if that means problems on you platform!
-	-deleted mechtype sets gss_mech_set_krb5,
-	gss_mech_set_krb5_old, gss_mech_set_krb5_both, gss_mech_set_krb5.
-	Please let me know if that breaks your code and needs to be fixed!
-	-added example gss-client.pl and gss-server.pl
-	(Thanks Merijn!)
-	-added SPNEGO Mechttype to OID.xs
-	-made the test.pl list available Mechtypes
-	-added indicate_mechs Example to POD
+	- added options (2) (3) (4) to Makefile.PL
+	  to make the configuration more flexible
+	  (if needed). Thanks Merijn!
 
+0.16	- changed Context.xs Destructor to warn only on GSS_S_FAILURE
+	(see <http://sourceforge.net/mailarchive/forum.php?thread_id=9674417&forum_id=47637>)
+	- Makefile.PL passes all the (needed!)
+	  krb5-config --libs gssapi stuff that is
+	  ignored by LIBS to LDDLFLGAS
+	- Tried to add userdocumentation to GSSAPI.pm (GSSAPI::Name)
+
+0.17	So Feb 12 21:52:41 CET 2006
+
+	- use of uppercase GSS_ style import-constants instead of lowercase
+	  gss_ constants. Hope this does not break things, please
+	  let me know if that means problems on you platform!
+	- deleted mechtype sets gss_mech_set_krb5,
+	  gss_mech_set_krb5_old, gss_mech_set_krb5_both, gss_mech_set_krb5.
+	  Please let me know if that breaks your code and needs to be fixed!
+	- added example gss-client.pl and gss-server.pl
+	  (Thanks Merijn!)
+	- added SPNEGO Mechttype to OID.xs
+	- made the test.pl list available Mechtypes
+	- added indicate_mechs Example to POD
+
+0.18	Tu Feb 14 12:53:14 UTC 2006
+
+	- inline definition of
+	  __GSS_KRB5_NT_USER_NAME
+	  __GSS_KRB5_NT_PRINCIPAL_NAME
+	  __gss_mech_krb5_v2 ( gss_mech_krb5_v2 is back)
+	  to make module indpendent from GSSAPI implementations
+	  which does not export the symbols.
+	  See <http://mailman.mit.edu/pipermail/krbdev/2005-February/003193.html>
+	- tests adjusted
+	- splitted testst to separate files in t/
+	  Make tests runable separately.

@@ -5,6 +5,9 @@
 #define __KRB5_MECHTYPE_OID &mygss_mech_krb5
 #define __KRB5_OLD_MECHTYPE_OID &mygss_mech_krb5_old
 #define __SPNEGO_MECHTYPE_OID &myspnego_oid_desc
+#define __GSS_KRB5_NT_USER_NAME &mygss_nt_krb5_name
+#define __GSS_KRB5_NT_PRINCIPAL_NAME &mygss_nt_krb5_principal
+#define __gss_mech_krb5_v2 &mygss_mech_krb5_v2
 
 #if defined(HEIMDAL)
 #include <gssapi.h>
@@ -16,11 +19,22 @@
 #include <gssapi/gssapi_krb5.h>
 #endif
 
+/*
+
+See
+http://mailman.mit.edu/pipermail/krbdev/2005-February/003193.html
+"
+*/
 static gss_OID_desc  mygss_mech_krb5  = {9, (void *) "\x2a\x86\x48\x86\xf7\x12\x01\x02\x02"};
 static gss_OID_desc  mygss_mech_krb5_old  = {5, (void *) "\x2b\x05\x01\x05\x02"};
 
 static gss_OID_desc myspnego_oid_desc = {6, (void *) "\x2b\x06\x01\x05\x05\x02"};
 
+static gss_OID_desc mygss_nt_krb5_name =  {10, (void *) "\052\206\110\206\367\022\001\002\002\001"};
+
+static gss_OID_desc mygss_nt_krb5_principal = {10, (void *) "\052\206\110\206\367\022\001\002\002\002"};
+
+static gss_OID_desc mygss_mech_krb5_v2 = {9, (void *) "\052\206\110\206\367\022\001\002\003"};
 
 static double
 constant_GSS_S_NO(char *name, int len, int arg)

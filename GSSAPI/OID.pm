@@ -23,6 +23,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 	gss_mech_krb5
 	gss_mech_krb5_old
 	gss_mech_spnego
+	gss_mech_krb5_v2
 
 ) ] );
 
@@ -72,6 +73,7 @@ GSSAPI::OID - methods for handling GSSAPI OIDs and some constant OIDs
   $oid = gss_nt_krb5_principal;
   $oid = gss_mech_krb5;
   $oid = gss_mech_krb5_old;
+  $oid = gss_mech_krb5_v2;
 
   $oid = gss_mech_spnego;
 

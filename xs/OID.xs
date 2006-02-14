@@ -17,7 +17,10 @@ DESTROY(oid)
 	if (oid != NULL &&
 	    oid != __KRB5_MECHTYPE_OID &&
 	    oid != __KRB5_OLD_MECHTYPE_OID &&
-	    oid != __SPNEGO_MECHTYPE_OID ) {
+	    oid != __GSS_KRB5_NT_USER_NAME &&
+	    oid != __GSS_KRB5_NT_PRINCIPAL_NAME &&
+	    oid != __SPNEGO_MECHTYPE_OID &&
+	    oid != __gss_mech_krb5_v2  ) {
 	    (void)gss_release_oid(&minor, &oid);
 	}
 #endif
@@ -126,14 +129,14 @@ gss_nt_service_name_v2()
 GSSAPI::OID_const
 gss_nt_krb5_name()
     CODE:
-	RETVAL = GSS_KRB5_NT_USER_NAME;
+	RETVAL = __GSS_KRB5_NT_USER_NAME;
     OUTPUT:
 	RETVAL
 
 GSSAPI::OID_const
 gss_nt_krb5_principal()
     CODE:
-	RETVAL = GSS_KRB5_NT_PRINCIPAL_NAME;
+	RETVAL = __GSS_KRB5_NT_PRINCIPAL_NAME;
     OUTPUT:
 	RETVAL
 
@@ -157,17 +160,13 @@ gss_mech_krb5_old()
 	RETVAL = __KRB5_OLD_MECHTYPE_OID;
     OUTPUT:
 	RETVAL
-# Achim Grolms, 2006-02-04
-# deleted this function, it makes the compile
-# fail, I don't know if this function is useful
-#
 
-#GSSAPI::OID_const
-#gss_mech_krb5_v2()
-#    CODE:
-#	RETVAL = gss_mech_krb5_v2;
-#    OUTPUT:
-#	RETVAL
+GSSAPI::OID_const
+gss_mech_krb5_v2()
+    CODE:
+	RETVAL = __gss_mech_krb5_v2;
+    OUTPUT:
+	RETVAL
 
 GSSAPI::OID_const
 gss_nt_hostbased_service()
