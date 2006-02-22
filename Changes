@@ -92,3 +92,12 @@ Revision history for Perl extension GSSAPI.
 	- tests adjusted
 	- splitted testst to separate files in t/
 	  Make tests runable separately.
+
+0.19    We Feb 22 14:39:45 UTC 2006
+
+
+        - GSS_KRB5_NT_MACHINE_UID_NAME is now GSS_C_NT_MACHINE_UID_NAME
+          Thanks to David Leonard!
+        - changed my stupid commenst not to be interpreted as precompiler
+          statements...
+          ...seems this is a brown paperbag release...

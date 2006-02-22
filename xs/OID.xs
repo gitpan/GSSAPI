@@ -89,7 +89,7 @@ gss_nt_user_name()
 GSSAPI::OID_const
 gss_nt_machine_uid_name()
     CODE:
-	RETVAL = GSS_KRB5_NT_MACHINE_UID_NAME;
+	RETVAL = GSS_C_NT_MACHINE_UID_NAME;
     OUTPUT:
 	RETVAL
 

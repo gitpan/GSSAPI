@@ -163,6 +163,7 @@ WriteMakefile(
      LIBS               => join (' ', @GSSLIBS),
     'NAME'		=> 'GSSAPI',
     'VERSION_FROM'	=> 'GSSAPI.pm',
+#    'CCFLAGS'           => '-Wall',
     'PREREQ_PM'		=> { 'Test::More' => 0 },
     @LDDLFLAGS,
     'DEFINE'            => join (' ', @EXTRADEFINES),

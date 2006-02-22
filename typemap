@@ -275,10 +275,10 @@ T_BUFFER_DESC_COPY
 T_BUFFER_STR
 	if ($var.value != NULL) {
 	    sv_setpv($arg, $var.value);
-#	    sv_setpvn($arg, $var.value, $var.length);
-#	    SvCUR_set($arg, $var.length-1);
+#     sv_setpvn($arg, $var.value, $var.length);
+#     SvCUR_set($arg, $var.length-1);
 #
-# 2006-02-06 TP-02 Merijn Broeren
+#     2006-02-06 TP-02 Merijn Broeren
 	    SvSETMAGIC($arg);
 	} else {
 	    sv_setsv_mg($arg, &PL_sv_undef);
@@ -288,13 +288,14 @@ T_BUFFER_STR
 	    gss_release_buffer(&minor, &$var);
 	}
 
+
+#    patch TP-03 Merijn Broeren
+#    see http://rt.cpan.org/Public/Bug/Display.html?id=5681
+#    sv_setpvn($arg, $var.value, $var.length);
+
 T_BUFFER_STR_OUT
 	if ($var.value != NULL) {
-	    # patch TP-03 Merijn Broeren
-	    # see http://rt.cpan.org/Public/Bug/Display.html?id=5681
-            #sv_setpvn($arg, $var.value, $var.length);
-	    sv_setpv($arg, $var.value);
-	    #SvCUR_set($arg, $var.length);
+            sv_setpv($arg, $var.value);
 	    SvSETMAGIC($arg);
 	} else {
 	    sv_setsv_mg($arg, &PL_sv_undef);

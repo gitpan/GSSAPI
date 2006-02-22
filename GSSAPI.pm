@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.18';
+our $VERSION = '0.19';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -595,13 +595,38 @@ All other functions are class or instance methods.
 
 =head1 SEE ALSO
 
-RFC2743
-RFC2744
 GSSAPI::Status(3p)
 GSSAPI::OID(3p)
 GSSAPI::OID::Set(3p)
+
+=over
+
+=item RFC2743
+
+Generic Security Service API Version 2 : C-bindings
+
+=item RFC2744
+
+Generic Security Service Application Program Interface
+
+=item LWP::Authen::Negotiate
+
+GSSAPI based Authentication plugin for LWP
+
+=item Authen::SASL::Perl::GSSAPI
+
+A SASL adapter, implementing the Authen::SASL interface,
+using GSSAPI.pm
+
+=item http://perlgssapi.sourceforge.net/
+
+Holds an actual list of GSSAPI.pm authentication using
+modules
+
+=back
+
 perl(1)
-LWP::Authen::Negotiate
+
 
 =head1 BUGS
 

@@ -5,7 +5,7 @@ use strict;
 use ExtUtils::testlib;
 
 use GSSAPI qw(:all);
-use Test::More tests => 1 + 3 * 9;
+use Test::More tests => 1 + 3 * 11;
 
 
 my $oidset = GSSAPI::OID::Set->new();
@@ -22,6 +22,8 @@ my %tobetested
        'gss_nt_krb5_name'         => gss_nt_krb5_name,
        'gss_nt_krb5_principal'    => gss_nt_krb5_principal,
        'gss_mech_krb5_v2'         => gss_mech_krb5_v2,
+       'gss_nt_machine_uid_name'  => gss_nt_machine_uid_name,
+       'gss_nt_string_uid_name'   => gss_nt_string_uid_name,
       );
 
 while ( my ($key,$value) = each %tobetested ) {
