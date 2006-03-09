@@ -101,3 +101,12 @@ Revision history for Perl extension GSSAPI.
         - changed my stupid commenst not to be interpreted as precompiler
           statements...
           ...seems this is a brown paperbag release...
+
+0.20    Th Mar  9 19:04:33 CET 2006
+
+        - Bugfix of <http://www.nntp.perl.org/group/perl.cpan.testers/290559>
+          (ExtUtils-ParseXS-2.15 triggered broken typemap error)
+          Thanks to  Sébastien Aperghis-Tramoni
+          and Alexandre Ghisoli
+        - changed Constants exporting system.
+          Thanks to Marc Lehmann

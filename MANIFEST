@@ -20,6 +20,7 @@ README
 examples/getcred_hostbased.pl
 examples/gss-client.pl
 examples/gss-server.pl
-t/1status.t
+t/2status.t
 t/checkoids.t
 t/zbugfixes.t
+t/1constants.t

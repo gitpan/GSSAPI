@@ -1,20 +1,19 @@
-GSSAPI Perlbindings version 0.19
+GSSAPI Perlbindings version 0.20
 =================================
 GSSAPI - Perl extension for using
-GSSAPI RfC RFC 2744  from Implementations like MIT Kerberos
-or Heimdal.
-(see test.pl for tests that do not work on Heimdal)
+GSSAPI C-Bindings as described in RFC 2744.
 
 The module is based on GSSAPI 0.13 written by Philip Guenther
 
 Testing and development was done against
 
--heimdal 0.6.2
--heimdal 0.7.1
--MIT Kerberos 5 release 1.4.3
--MIT Kerberos 5 release 1.3.1
+- heimdal 0.6.2
+- heimdal 0.7.1
+- MIT Kerberos 5 release 1.4.3
+- MIT Kerberos 5 release 1.3.1
+- VAS 3.0.1
 
-all on Linux 2.4
+see t/test.t for tests that do not work on Heimdal.
 
 Please let me know if there are buildingproblems wih your
 Kerberossoftware.
@@ -24,10 +23,11 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-  An installed Version of GSS-API bindings like MIT-Kerberos or Heimdal,
-  visit
+  An installed Version of GSS-API bindings, e.g
+
   MIT Kerberos <http://web.mit.edu/kerberos/www/>
   Heimdal      <http://www.pdc.kth.se/heimdal/>
+  VAS          <http://www.quest.com/>
 
 Make sure the krb5-config command is present,
 Makefile.PL needs it to detect the library configuration.
