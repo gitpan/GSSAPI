@@ -24,3 +24,5 @@ t/2status.t
 t/checkoids.t
 t/zbugfixes.t
 t/1constants.t
+t/pod-coverage.t
+t/pod.t

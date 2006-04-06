@@ -110,3 +110,8 @@ Revision history for Perl extension GSSAPI.
           and Alexandre Ghisoli
         - changed Constants exporting system.
           Thanks to Marc Lehmann
+
+0.21    Th Apr  6 20:28:59 CEST 2006
+
+        - Bugfix of zbufixes.t
+          see <http://rt.cpan.org/Public/Bug/Display.html?id=18531>
