@@ -13,27 +13,28 @@ my $okay;
 
 my($name, $name2, $same, $export, $display, $type);
 
-$status = GSSAPI::Name->import($name, 'chpasswd@mars.gac.edu',
-				gss_nt_service_name);
+$status = GSSAPI::Name->import( $name, 'chpasswd@mars.gac.edu' );
 
 ok($status, 'GSSAPI::Name->import of chpasswd@mars.gac.edu' );
 
-ok(ref $name eq "GSSAPI::Name",  'ref $name eq "GSSAPI::Name"');
+SKIP: {
+   skip('GSSAPI::Name->import() failed', 4 ) unless $status;
 
+   ok(ref $name eq "GSSAPI::Name",  'ref $name eq "GSSAPI::Name"');
+   my $status;
 
+   $status = $name->duplicate($name2);
+   ok($status->major == GSS_S_COMPLETE, '$name->duplicate($name2)');
 
-#------------------------------------------
-$status = $name->duplicate($name2);
-ok($status->major == GSS_S_COMPLETE, '$name->duplicate($name2)');
-
-$status = $name->compare($name2, $same);
-ok($status->major == GSS_S_COMPLETE, '$name->compare($name2, $same)');
-
-eval {
+   $status = $name->compare($name2, $same);
+   ok($status->major == GSS_S_COMPLETE, '$name->compare($name2, $same)');
+   eval {
 	$status = $name->compare($name2, 0);
-};
-ok( $@ =~ /Modification of a read-only value/ , 'Modification of a read-only value');
+   };
+   ok( $@ =~ /Modification of a read-only value/ , 'Modification of a read-only value');
 
+
+}
 
 #------------------------------------------
 

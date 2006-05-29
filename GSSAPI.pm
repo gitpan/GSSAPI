@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.21';
+our $VERSION = '0.22';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -561,6 +561,10 @@ Philip Guenther <pguen@cpan.org>
 =item Marc Lehmann
 
 =item David Leonard
+
+=item Florian Ragwitz
+
+maintainer of Debian package
 
 =back
 

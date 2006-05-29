@@ -185,8 +185,8 @@ sub find_krb5config_cmd {
    my ($expl_path) = @_;
    my $r = undef;
    unless ($expl_path) {
-      my $whichcmd =  find_which_command() || die 'cannot locate which command';
-      $r = `$whichcmd krb5-config 2>/dev/null`;
+      #my $whichcmd =  find_which_command() || die 'cannot locate which command';
+      $r = `which krb5-config 2>/dev/null`;
       chomp $r;
    } else {
       my $supposed = join '/', $expl_path, 'bin', 'krb5-config';

@@ -115,3 +115,12 @@ Revision history for Perl extension GSSAPI.
 
         - Bugfix of zbufixes.t
           see <http://rt.cpan.org/Public/Bug/Display.html?id=18531>
+
+0.22    Mo Mai 29 21:15:17 CEST 2006
+
+        - Bufix <http://rt.cpan.org/Public/Bug/Display.html?id=18576>
+        - Bugfix of <http://rt.cpan.org/Public/Bug/Display.html?id=19524>
+                    <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=367377>
+          Thanks to Florian Ragwitz and Daniel Schepler
+        - Bugfix of <http://www.nntp.perl.org/group/perl.ldap/2083>
+          Thanks to Quanah Gibson-Mount
