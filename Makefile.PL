@@ -140,14 +140,16 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
     #---------------------------------------------------------------
     if ( is_heimdal($krb5cmd) ) {
        push @EXTRADEFINES,  '-DHEIMDAL';
-       #print $LINE, ' Setting Heimdal Defines';
     }
-    #
-    # Reading this at configuration Time is boring
-    #
-    #else {
-    #   print $LINE, ' Setting MIT defines';
-    #}
+
+    if ( is_mit_1_2($krb5cmd) ) {
+        #
+        # activate Workaround to support
+        # MIT Kerberos 1.2.x
+        # (constants in old lowercase-style)
+        #
+        push @EXTRADEFINES,  '-DMITKERB12';
+    }
 }
 
 
@@ -224,6 +226,21 @@ sub is_heimdal {
    FOUND: {
       foreach ( @vinfo) {
          if ( m/eimdal/) {
+            $r = 1;
+	    last FOUND;
+         }
+       }
+   }
+   return $r;
+}
+#-------------------------------------------------
+sub is_mit_1_2 {
+   my ($cfgcmd) = @_;
+   my $r = undef;
+   my @vinfo = krb5_version( $cfgcmd );
+   FOUND: {
+      foreach ( @vinfo) {
+         if ( m/Kerberos 5 release 1\.2/) {
             $r = 1;
 	    last FOUND;
          }

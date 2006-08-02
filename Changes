@@ -70,7 +70,7 @@ Revision history for Perl extension GSSAPI.
 
 	- use of uppercase GSS_ style import-constants instead of lowercase
 	  gss_ constants. Hope this does not break things, please
-	  let me know if that means problems on you platform!
+	  let me know if that means problems on your platform!
 	- deleted mechtype sets gss_mech_set_krb5,
 	  gss_mech_set_krb5_old, gss_mech_set_krb5_both, gss_mech_set_krb5.
 	  Please let me know if that breaks your code and needs to be fixed!
@@ -86,11 +86,10 @@ Revision history for Perl extension GSSAPI.
 	  __GSS_KRB5_NT_USER_NAME
 	  __GSS_KRB5_NT_PRINCIPAL_NAME
 	  __gss_mech_krb5_v2 ( gss_mech_krb5_v2 is back)
-	  to make module indpendent from GSSAPI implementations
+	  to make module independent from GSSAPI implementations
 	  which does not export the symbols.
 	  See <http://mailman.mit.edu/pipermail/krbdev/2005-February/003193.html>
-	- tests adjusted
-	- splitted testst to separate files in t/
+	- splitted tests to separate files in t/
 	  Make tests runable separately.
 
 0.19    We Feb 22 14:39:45 UTC 2006
@@ -98,7 +97,7 @@ Revision history for Perl extension GSSAPI.
 
         - GSS_KRB5_NT_MACHINE_UID_NAME is now GSS_C_NT_MACHINE_UID_NAME
           Thanks to David Leonard!
-        - changed my stupid commenst not to be interpreted as precompiler
+        - changed my stupid comments not to be interpreted as precompiler
           statements...
           ...seems this is a brown paperbag release...
 
@@ -124,3 +123,8 @@ Revision history for Perl extension GSSAPI.
           Thanks to Florian Ragwitz and Daniel Schepler
         - Bugfix of <http://www.nntp.perl.org/group/perl.ldap/2083>
           Thanks to Quanah Gibson-Mount
+
+0.23    Mi Aug  2 15:48:19 UTC 2006
+
+        - Re-added support of MIT Kerberos 1.2.x
+          (Many have asked for this)

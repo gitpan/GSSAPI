@@ -18,6 +18,14 @@
 #include <gssapi/gssapi.h>
 #include <gssapi/gssapi_generic.h>
 #include <gssapi/gssapi_krb5.h>
+#if defined(MITKERB12)
+/* symbols not defined in MIT Kerberos 1.2.x */
+#define GSS_C_NT_USER_NAME gss_nt_user_name
+#define GSS_C_NT_MACHINE_UID_NAME gss_nt_machine_uid_name
+#define GSS_C_NT_STRING_UID_NAME gss_nt_string_uid_name
+#define GSS_C_NT_HOSTBASED_SERVICE gss_nt_service_name
+#define GSS_C_NT_EXPORT_NAME gss_nt_exported_name
+#endif
 #endif
 
 /*
