@@ -5,36 +5,15 @@ use strict;
 use ExtUtils::testlib;
 
 use GSSAPI qw(:all);
-use Test::More tests => 28;
+use Test::More tests => 19;
 
 
 my $status;
 my $okay;
 
-my($name, $name2, $same, $export, $display, $type);
-
-$status = GSSAPI::Name->import( $name, 'chpasswd@mars.gac.edu' );
-
-ok($status, 'GSSAPI::Name->import of chpasswd@mars.gac.edu' );
-
-SKIP: {
-   skip('GSSAPI::Name->import() failed', 4 ) unless $status;
-
-   ok(ref $name eq "GSSAPI::Name",  'ref $name eq "GSSAPI::Name"');
-   my $status;
-
-   $status = $name->duplicate($name2);
-   ok($status->major == GSS_S_COMPLETE, '$name->duplicate($name2)');
-
-   $status = $name->compare($name2, $same);
-   ok($status->major == GSS_S_COMPLETE, '$name->compare($name2, $same)');
-   eval {
-	$status = $name->compare($name2, 0);
-   };
-   ok( $@ =~ /Modification of a read-only value/ , 'Modification of a read-only value');
+my( $type);
 
 
-}
 
 #------------------------------------------
 
@@ -136,14 +115,17 @@ undef $oidset;
 #	GSSAPI::Cred
 #
 
-    my($cred1, $time);
+    my($cred1, $time, $name );
 
     $status = GSSAPI::Cred::acquire_cred(undef, 120, undef, GSS_C_INITIATE,
 				$cred1, $oidset, $time);
 
 SKIP: {
     if ( $status->major != GSS_S_COMPLETE ) {
-        skip( 'This tests only work if user has run kinit succesfully', 6 );
+        diag( "\n\nNo error: acquire_cred() failed, maybe because you have to run kinit first.\n",
+              "Errormessage from your GSSAPI-implementation is: \n\n" . $status ,
+              "\nrun kinit to get a TGT and retry this test (just skipping now).\n\n");
+        skip( 'This tests only work if user has run kinit succesfully' , 6 );
     }
     ok($status, 'GSSAPI::Cred::acquire_cred');
     ok(ref $cred1 eq "GSSAPI::Cred");
@@ -163,30 +145,8 @@ SKIP: {
 
 
 
-{
-  my $oidset;
-  my $isin = 0;
-  my $supportresponse;
-  my $status = GSSAPI::indicate_mechs( $oidset );
-  ok ( $status, q{ GSSAPI::indicate_mechs( $oidset ) } );
-
-  $status = $oidset->contains( gss_mech_krb5_old, $isin );
-  $supportresponse = $isin ? ' supports KRB5 old Mechtype' :  ' does not support KRB5 old Mechtype';
-  ok ( $status, q{ $oidset->contains( gss_mech_krb5_old, $isin ) - implementation } . $supportresponse );
 
 
-  $status = $oidset->contains( gss_mech_krb5, $isin );
-  $supportresponse = $isin ? ' supports Kerberos 5' :  ' does not support Kerberos 5';
-  ok ( $status, q{ $oidset->contains( gss_mech_krb5, $isin ) - implementation } . $supportresponse );
-
-  $status = $oidset->contains( gss_mech_spnego, $isin );
-  $supportresponse = $isin ? ' supports SPNEGO' :  ' does not support SPNEGO';
-  ok ( $status, q{ $oidset->contains( gss_mech_spnego, $isin ) - implementation } . $supportresponse );
-
-}
-print "\n\n if you want to run tests that do a realworld *use* of your GSSAPI",
-      "\n start a kinit and try to run",
-      "\n./examples/getcred_hostbased.pl \n\n";
 
 #-------------------------------------------------------------
 

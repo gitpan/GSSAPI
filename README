@@ -1,4 +1,4 @@
-GSSAPI Perlbindings version 0.23
+GSSAPI Perlbindings version 0.24
 =================================
 GSSAPI - Perl extension for using
 GSSAPI C-Bindings as described in RFC 2744.
@@ -9,14 +9,15 @@ Testing and development was done against
 
 - heimdal 0.6.2
 - heimdal 0.7.1
-- MIT Kerberos 5 release 1.4.3
-- MIT Kerberos 5 release 1.3.1
+- MIT Kerberos 5 release 1.5.2 
+- MIT Kerberos 5 release 1.4.3 
+- MIT Kerberos 5 release 1.3.1 
 - MIT Kerberos 5 release 1.2.7
 - VAS 3.0.1
 
 see t/test.t for tests that do not work on Heimdal.
 
-Please let me know if there are buildingproblems wih your
+Please let me know if there are buildingproblems with your
 Kerberossoftware.
 
 
@@ -81,7 +82,7 @@ GSSAPI is originally written by Philip Guenther
 COPYRIGHT AND LICENCE
 
 
-Copyright (C) 2006 by Achim Grolms perl@grolmsnet.de
+Copyright (C) 2006, 2007 by Achim Grolms perl@grolmsnet.de
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.4 or,

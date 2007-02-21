@@ -128,3 +128,9 @@ Revision history for Perl extension GSSAPI.
 
         - Re-added support of MIT Kerberos 1.2.x
           (Many have asked for this)
+
+0.24    Wed, 21 Feb 2007 20:59:39 +0100
+
+        - Changed tests as an answer to FAIL 413320
+          <http://www.nntp.perl.org/group/perl.cpan.testers/2007/02/msg413320.html>
+          Thanks to Florian Lindner

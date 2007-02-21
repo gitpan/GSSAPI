@@ -25,3 +25,5 @@ t/checkoids.t
 t/zbugfixes.t
 t/1constants.t
 t/pod.t
+t/importnames.t
+t/indicatemechs.t

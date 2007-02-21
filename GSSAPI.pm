@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.23';
+our $VERSION = '0.24';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.

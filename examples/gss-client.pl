@@ -51,7 +51,7 @@ $status || gss_exit("CLIENT::Unable to import server name: $server_name", $statu
 $status = $gss_server_name->display(my $display_name, my $type);
 print "CLIENT::principal [$server_name] means going to communicate with server name [$display_name]\n";
 
-my $gss_input_token = GSS_C_NO_BUFFER;
+my $gss_input_token = q{};
 
 my $socket = IO::Socket::INET->new
   (
@@ -102,18 +102,20 @@ do {
 
     print "CLIENT::gss_init_sec_context success\n";
 
-    # The GSS protocol can do mutual authentication. If this is requested, the token 
-    # that we generate in the first pass will indicate this to the server. The major 
-    # status will have the GSS_S_CONTINUE_NEEDED bit set to indicate that we are 
-    # expecting a reply with a server identity token. This loop will continue until 
+    # The GSS protocol can do mutual authentication. If this is requested, the token
+    # that we generate in the first pass will indicate this to the server. The major
+    # status will have the GSS_S_CONTINUE_NEEDED bit set to indicate that we are
+    # expecting a reply with a server identity token. This loop will continue until
     # that bit is no longer set. It should go through only once (non-mutual) or twice
-    # (mutual). 
+    # (mutual).
 
     if ($counter == 1) {
 	print "CLIENT::going to identify client to server\n";
     } elsif ($counter == 2) {
 	print "CLIENT::confirmed server identity from mutual token\n";
-	$gss_server_name->display(my $server_name, my $type);
+        my $server_name;
+	$status = $gss_server_name->display($server_name);
+        $status || gss_exit("CLIENT::Unable to display server name", $status);
         print "CLIENT::authenticated server name is $server_name\n" if $server_name;
 
     } else {
@@ -158,7 +160,7 @@ sub gss_exit {
 
   my @major_errors = $status->generic_message();
   my @minor_errors = $status->specific_message();
- 
+
   print STDERR "$errmsg:\n";
   foreach my $s (@major_errors) {
     print STDERR "  MAJOR::$s\n";

@@ -91,8 +91,10 @@ while (! $error) {
 			my $out_time,
 			my $gss_delegated_cred);
 
-	$status or $error = gss_exit("Unable to accept security context", $status);
-	$gss_client_name->display(my $client_name, my $type);
+	$status or  gss_exit("Unable to accept security context", $status);
+        my $client_name;
+	$status = $gss_client_name->display($client_name);
+        $status or  gss_exit("Unable to display client name", $status);
 	print "SERVER::authenticated client name is $client_name\n" if $client_name;
 
 	if($gss_output_token) {
@@ -122,7 +124,7 @@ sub gss_exit {
 
   my @major_errors = $status->generic_message();
   my @minor_errors = $status->specific_message();
- 
+
   print STDERR "$errmsg:\n";
   foreach my $s (@major_errors) {
     print STDERR "  MAJOR::$s\n";
