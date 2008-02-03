@@ -1,11 +1,14 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         GSSAPI
-version:      0.24
-version_from: GSSAPI.pm
-installdirs:  site
-requires:
+--- #YAML:1.0
+name:                GSSAPI
+version:             0.25
+abstract:            Perl extension providing access to the GSSAPIv2 library
+license:             perl
+author:              
+    - Achim Grolms <perl@grolmsnet.de>
+generated_by:        ExtUtils::MakeMaker version 6.42
+distribution_type:   module
+requires:     
     Test::More:                    0
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.30
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
+    version: 1.3

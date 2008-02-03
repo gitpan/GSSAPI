@@ -9,6 +9,23 @@
 #define __GSS_KRB5_NT_PRINCIPAL_NAME &mygss_nt_krb5_principal
 #define __gss_mech_krb5_v2 &mygss_mech_krb5_v2
 
+/*
+|  Defines explanation:
+|
+|  SEAM
+|  different structure of headerfiles on Solaris 10 / Opensolaris
+|  Trigger for setting SEAM is 'Solaris' keyword in output
+|  of krb5-config --version (See Makefile.PL)
+|  See <http://rt.cpan.org/Public/Bug/Display.html?id=32788>
+|
+|  MITKERB12
+|  MIT-kerbeors of version 1.2.x does not provide alls constants
+|  of the uppercase GSS_C* style. Some tweaking is required.
+|  Trigger for setting MITKERB12 is the version-number in output
+|  of krb5-config --version (See Makefile.PL)
+|
+*/
+
 #if defined(HEIMDAL)
 #include <gssapi.h>
 #endif
@@ -16,8 +33,12 @@
 #if !defined(HEIMDAL)
 
 #include <gssapi/gssapi.h>
+#if !defined(SEAM)
 #include <gssapi/gssapi_generic.h>
 #include <gssapi/gssapi_krb5.h>
+#else
+#include <gssapi/gssapi_ext.h>
+#endif
 #if defined(MITKERB12)
 /* symbols not defined in MIT Kerberos 1.2.x */
 #define GSS_C_NT_USER_NAME gss_nt_user_name

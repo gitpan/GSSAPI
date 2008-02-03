@@ -103,6 +103,10 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
     unless ($libconf) {
        die "$krb5cmd does not respond libconf!";
     } else {
+      if ($libconf =~ /Unknown/ && $implementation =~ /Solaris Kerberos/) {
+            $libconf = "-L/usr/lib -R/usr/lib -lgss";
+      }
+
       my ($gsslibs, $otherparm) = find_libs_in_krb5config_string( $libconf  );
 
       #
@@ -137,6 +141,10 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
        #
        $incconf = '-I/usr/include';
     }
+    if ($incconf =~ /Unknown/ && $implementation =~ /Solaris Kerberos/) {
+          $incconf = "-I/usr/include/kerberosv5";
+          push @EXTRADEFINES,  '-DSEAM';
+    }
     #---------------------------------------------------------------
     if ( is_heimdal($krb5cmd) ) {
        push @EXTRADEFINES,  '-DHEIMDAL';
@@ -152,7 +160,6 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
     }
 }
 
-
 #--------------------------------------------------------------
 print "$LINE Adding own DEFINEs \n\n @EXTRADEFINES" if( scalar(@EXTRADEFINES) );
 print "$LINE Using LIBS\n\n @GSSLIBS",
@@ -162,7 +169,10 @@ print "$LINE Using LIBS\n\n @GSSLIBS",
 
 
 WriteMakefile(
-     LIBS               => join (' ', @GSSLIBS),
+    'AUTHOR'            => 'Achim Grolms <perl@grolmsnet.de>',
+    'ABSTRACT_FROM'     => 'GSSAPI.pm',
+    'LICENSE'           => 'perl',
+    'LIBS'              => join (' ', @GSSLIBS),
     'NAME'		=> 'GSSAPI',
     'VERSION_FROM'	=> 'GSSAPI.pm',
 #    'CCFLAGS'           => '-Wall',
@@ -240,7 +250,7 @@ sub is_mit_1_2 {
    my @vinfo = krb5_version( $cfgcmd );
    FOUND: {
       foreach ( @vinfo) {
-         if ( m/Kerberos 5 release 1\.2/) {
+         if ( m/Kerberos 5 release 1\.2/ && !m/Solaris Kerberos/) {
             $r = 1;
 	    last FOUND;
          }

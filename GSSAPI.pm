@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.24';
+our $VERSION = '0.25';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -566,11 +566,15 @@ Philip Guenther <pguen@cpan.org>
 
 maintainer of Debian package
 
+=item Markus Moeller
+
+Solaris 10 /  OpenSolaris support
+
 =back
 
 =head1 COPYRIGHT
 
-Copyright (c) 2006 Achim Grolms All rights reserved.
+Copyright (c) 2006,2008 Achim Grolms. All rights reserved.
 This program is free software; you can redistribute it
 and/or modify it under the same terms as Perl itself.
 
