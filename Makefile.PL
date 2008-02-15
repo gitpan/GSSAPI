@@ -91,7 +91,10 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
     print $LINE, ' Searching krb5-config command... ';
     my $krb5cmd = find_krb5config_cmd($options{'gssapiimpl'} );
     unless ($krb5cmd) {
-	die 'not found!';
+	print 'NOT FOUND!';
+        print "\n\n seems this is a missing prerequirement.",
+              "\n The README file shipped with this module provides\n more information regarding prerequirements. \n\n";
+        exit 0; # send no automated FAIL testreport
     } else {
       print "\n\n $krb5cmd";
     }

@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                GSSAPI
-version:             0.25
+version:             0.26
 abstract:            Perl extension providing access to the GSSAPIv2 library
 license:             perl
 author:              

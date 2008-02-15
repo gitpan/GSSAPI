@@ -140,3 +140,9 @@ Revision history for Perl extension GSSAPI.
         - Enhancement to use OpenSolaris/Solaris 10 native gss library
           <http://rt.cpan.org/Public/Bug/Display.html?id=32788>
           Thanks to Markus Moeller
+
+0.26    Fr 15. Feb 22:32:10 UTC 2008
+
+        - modified Makefile.PL to trigger no FAIL testreports
+          in case of missing prerequirements.
+          Thanks to Andreas Koenig

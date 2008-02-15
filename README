@@ -1,4 +1,4 @@
-GSSAPI Perlbindings version 0.25
+GSSAPI Perlbindings version 0.26
 =================================
 GSSAPI - Perl extension for using
 GSSAPI C-Bindings as described in RFC 2744.
@@ -32,12 +32,26 @@ This module requires these other modules and libraries:
   Heimdal      <http://www.pdc.kth.se/heimdal/>
   VAS          <http://www.quest.com/>
 
-Make sure the krb5-config command is present,
+This GSSAPI-implementations ship with a command called 'krb5-config'.
+Make sure the krb5-config command is present and executeable,
 Makefile.PL needs it to detect the library configuration.
 
-(NetBSD: since 2006-01-26 krb5-config is present
- in pkgsrc/security/heimdal, see
- <http://mail-index.netbsd.org/pkgsrc-changes/2006/01/26/0036.html>)
+OS specific notes:
+
+- Windows - MIT KfW SDK:
+
+  This SDK does not provide the krb5-config command,
+  <http://www.mail-archive.com/kerberos%40mit.edu/msg12808.html>.
+  Instead of using krb5-config you need to specifiy the compiler and linker flags
+  on the perl Makefile.PL commandline. run
+      perl Makefile.PL --help
+  to see all available configuration options.
+
+- NetBSD:
+
+  since 2006-01-26 krb5-config is present
+  in pkgsrc/security/heimdal, see
+  <http://mail-index.netbsd.org/pkgsrc-changes/2006/01/26/0036.html
 
 
 INSTALLATION
@@ -68,6 +82,8 @@ Please let my know if your Platform needs support.
 
 AUTHOR:
 
+GSSAPI.pm is originally written by Philip Guenther.
+
 Maintanance by
 Achim Grolms <perl@grolmsnet.de>,
 
@@ -78,7 +94,6 @@ with help from
 
 <http://perlgssapi.sourceforge.net/>
 
-GSSAPI is originally written by Philip Guenther
 
 COPYRIGHT AND LICENCE
 
