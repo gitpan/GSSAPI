@@ -1,4 +1,4 @@
-GSSAPI Perlbindings version 0.26
+GSSAPI Perlbindings version 0.27
 =================================
 GSSAPI - Perl extension for using
 GSSAPI C-Bindings as described in RFC 2744.

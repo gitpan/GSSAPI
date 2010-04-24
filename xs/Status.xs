@@ -1,3 +1,4 @@
+#include "ppport.h"
 GSSAPI::Status
 new(class, major, minor)
 	char	*class
@@ -68,7 +69,7 @@ display_status(code, type)
     PPCODE:
 	msg_ctx = 0;
 	do {
-	    major_status = 
+	    major_status =
 		gss_display_status(&minor_status, code, type,
 				   GSS_C_NO_OID, &msg_ctx, &msg);
 	    if (GSS_ERROR(major_status)) {

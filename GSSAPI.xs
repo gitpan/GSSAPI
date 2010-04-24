@@ -1,6 +1,3 @@
-#include "EXTERN.h"
-#include "perl.h"
-#include "XSUB.h"
 
 #define __KRB5_MECHTYPE_OID &mygss_mech_krb5
 #define __KRB5_OLD_MECHTYPE_OID &mygss_mech_krb5_old
@@ -55,6 +52,13 @@ See
 http://mailman.mit.edu/pipermail/krbdev/2005-February/003193.html
 "
 */
+
+#include "EXTERN.h"
+#include "perl.h"
+#include "XSUB.h"
+#define NEED_newCONSTSUB
+#include "ppport.h"
+
 static gss_OID_desc  mygss_mech_krb5  = {9, (void *) "\x2a\x86\x48\x86\xf7\x12\x01\x02\x02"};
 static gss_OID_desc  mygss_mech_krb5_old  = {5, (void *) "\x2b\x05\x01\x05\x02"};
 

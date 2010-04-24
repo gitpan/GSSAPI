@@ -65,7 +65,7 @@ display(src, output, ...)
 	    RETVAL.major =
 		gss_display_name(&RETVAL.minor, src, &output, &outputtype);
 	    sv_setref_pvn(ST(2), "GSSAPI::OID", (void*)&outputtype,
-						sizeof(outputtype));
+						0 );
 	} else {
 	    RETVAL.major = gss_display_name(&RETVAL.minor, src, &output, NULL);
 	}

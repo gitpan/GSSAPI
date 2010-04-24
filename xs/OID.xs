@@ -1,4 +1,4 @@
-
+#include "ppport.h"
 GSSAPI::OID_out
 new(class)
 	char *		class

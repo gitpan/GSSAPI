@@ -146,3 +146,11 @@ Revision history for Perl extension GSSAPI.
         - modified Makefile.PL to trigger no FAIL testreports
           in case of missing prerequirements.
           Thanks to Andreas Koenig
+
+0.27    Sa 24. Apr 12:39:47 UTC 2010
+        - Testreport 1074976 and 1074843: put "use 5.006;" to Makefile.PL.
+          Thanks to  Slaven Rezic for reporting and doing all the tests on 5.005
+        - Fixed https://bugs.gentoo.org/show_bug.cgi?id=276555.
+          Thanks to Andrew Savchenko bircoph@gmail.com
+        - Changed sizeof(outputtype) to 0 to let Perl calculate the lengh
+          in Name.xs. Thanks to Zoltan BANAI <Zoltan.Banai@morganstanley.com>

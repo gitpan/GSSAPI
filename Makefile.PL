@@ -2,13 +2,22 @@ use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 use strict;
-
+use 5.006;   # builds on 5.005, but Slaven Rezic got strange testresults
 use Config;
 
 use Getopt::Long;
 my %options;
 
 my @whichcand = qw(/bin/which /usr/bin/which);
+
+my @KRB5_CONFIG_TRIES = (
+
+    '/usr/kerberos/bin/krb5-config',   # for use with CentOS,  as suggested by Mark Hedges in https://rt.cpan.org/Ticket/Display.html?id=48732
+    '/usr/bin/krb5-config',            # always worth a try ;-)
+
+);
+
+
 my $LINE = "\n\n----------------------------------------------------------\n";
 &GetOptions(\%options , "gssapiimpl=s",  "help", "gssapi_libs=s", "gssapi_inc=s", "gssapi_lddlflags=s");
 
@@ -58,7 +67,7 @@ HELP
 }
 
 #-------------------------------------------------------------
-print "\n Welcome to GSSAPI.pm setup! \n";
+print "\n Welcome to GSSAPI.pm setup! \n\n ($0 Version 0.03) \n";
 print qq{\n run "perl Makefile.PL --help" to see further installation options\n};
 
 #---------------------------------------------------------------
@@ -96,7 +105,7 @@ if (exists $options{gssapi_libs} || exists $options{gssapi_inc} || exists $optio
               "\n The README file shipped with this module provides\n more information regarding prerequirements. \n\n";
         exit 0; # send no automated FAIL testreport
     } else {
-      print "\n\n $krb5cmd";
+      print "\n\n using krb5-config command '$krb5cmd'.";
     }
     #---------------------------------------------
     my $implementation = krb5_version( $krb5cmd  );
@@ -202,7 +211,23 @@ sub find_krb5config_cmd {
    unless ($expl_path) {
       #my $whichcmd =  find_which_command() || die 'cannot locate which command';
       $r = `which krb5-config 2>/dev/null`;
+
       chomp $r;
+      unless ( $r ) {
+          my $n = 1;
+          print "\n krb5-config NOT found in \$PATH... now doing some guesswork: \n";
+          foreach $r ( @KRB5_CONFIG_TRIES ) {
+              print "\n $n. trying $r ...";
+              if ( -e $r ) {
+                  print 'found.';
+                  return $r;
+              }
+              else {
+                 print 'not found.';
+              }
+              $n++;
+          }
+      }
    } else {
       my $supposed = join '/', $expl_path, 'bin', 'krb5-config';
       if ( -e $supposed ) {
@@ -267,7 +292,8 @@ sub find_libs_in_krb5config_string {
    my ( $confstringstring ) = @_;
    my (@libs, @others);
    foreach ( split ' ',  $confstringstring ) {
-      if ( m/(-(Wl,-R|[LlR])[^ ]*)/) {
+      #if ( m/(-(Wl,-R|[LlR])[^ ]*)/) {
+      if ( m/(^-(Wl,-R|[LlR])[^ ]*)/) {
         push @libs, $1
       } else {
         push @others, $_;
