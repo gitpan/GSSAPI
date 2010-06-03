@@ -9,7 +9,7 @@ require Exporter;
 use XSLoader;
 
 our @ISA = qw(Exporter);
-our $VERSION = '0.27';
+our $VERSION = '0.28';
 
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
@@ -214,7 +214,7 @@ when the API changes.
 
 This module wraps the GSSAPI C-Bindings. If you are
 new to GSSAPI it is a good idea to read RFC2743 and RFC2744,
-the documentation requires you to be familar with the concept
+the documentation requires you to be familiar with the concept
 and the wordings of GSSAPI programming.
 
 the examples directory holds some working examples of usage:

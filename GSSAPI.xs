@@ -155,6 +155,7 @@ typedef gss_buffer_desc			gss_buffer_str_out;
 
 typedef void *				GSSAPI_obj;
 
+typedef gss_buffer_desc         gss_oidstr_out;
 
 int
 oid_set_is_dynamic(GSSAPI__OID__Set oidset)

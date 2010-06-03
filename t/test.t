@@ -5,7 +5,7 @@ use strict;
 use ExtUtils::testlib;
 
 use GSSAPI qw(:all);
-use Test::More tests => 19;
+use Test::More tests => 13;
 
 
 my $status;
@@ -26,7 +26,8 @@ SKIP:
 
    $status = $oid->to_str($str);
    ok($status, ' $oid->to_str($str) ');
-   ok($str eq '{ 1 2 840 113554 1 2 1 1 }', q{ $str eq '{ 1 2 840 113554 1 2 1 1 }' });
+   cmp_ok($str, 'eq', '{ 1 2 840 113554 1 2 1 1 }', q{ $str eq '{ 1 2 840 113554 1 2 1 1 }' });
+
 }
 
     { my(@oidss); foreach(1..1000) { push @oidss, GSSAPI::OID::Set->new() };
@@ -111,37 +112,6 @@ undef $oidset;
     }
     ok($okay, 'random types and values as input of GSSAPI::Binding');
 
-#
-#	GSSAPI::Cred
-#
-
-    my($cred1, $time, $name );
-
-    $status = GSSAPI::Cred::acquire_cred(undef, 120, undef, GSS_C_INITIATE,
-				$cred1, $oidset, $time);
-
-SKIP: {
-    if ( $status->major != GSS_S_COMPLETE ) {
-        diag( "\n\nNo error: acquire_cred() failed, maybe because you have to run kinit first.\n",
-              "Errormessage from your GSSAPI-implementation is: \n\n" . $status ,
-              "\nrun kinit to get a TGT and retry this test (just skipping now).\n\n");
-        skip( 'This tests only work if user has run kinit succesfully' , 6 );
-    }
-    ok($status, 'GSSAPI::Cred::acquire_cred');
-    ok(ref $cred1 eq "GSSAPI::Cred");
-    ok(ref $oidset eq "GSSAPI::OID::Set");
-
-    my($lifetime, $cred_usage);
-    $status = $cred1->inquire_cred($name, $lifetime, $cred_usage, $oidset);
-
-
-
-    ok( $status, '$cred1->inquire_cred($name, $lifetime, $cred_usage, $oidset' );
-
-    ok(ref $oidset eq "GSSAPI::OID::Set");
-    ok($cred_usage & GSS_C_INITIATE);
-
-}
 
 
 

@@ -30,9 +30,7 @@ use Test::More tests => 3;
            if ( $status->major != GSS_S_COMPLETE  ) {
              skip('$name->display() failed', 1 );
            }
-           ok ( $keystring eq lc $display,
-                'check bugfix of <http://rt.cpan.org/Public/Bug/Display.html?id=5681>');
-
+           cmp_ok ( lc $display, 'eq', $keystring, 'check bugfix of <http://rt.cpan.org/Public/Bug/Display.html?id=5681>');
        }
    }
 }

@@ -46,6 +46,7 @@ gss_buffer_desc_out				T_BUFFER_DESC_OUT
 gss_buffer_desc_copy				T_BUFFER_DESC_COPY
 gss_buffer_str					T_BUFFER_STR
 gss_buffer_str_out				T_BUFFER_STR_OUT
+gss_oidstr_out                  T_BUFFER_OIDSTR_OUT
 gss_cred_usage_t				T_IV
 gss_qop_t					T_UV
 OM_uint32					T_U_LONG
@@ -179,6 +180,11 @@ T_BUFFER_STR_OUT
 	$var.length = 0;
 	$var.value = NULL;
 
+T_BUFFER_OIDSTR_OUT
+    $var.length = 0;
+    $var.value = NULL;
+
+
 
 OUTPUT
 
@@ -282,7 +288,7 @@ T_BUFFER_STR
 
 T_BUFFER_STR_OUT
 	if ($var.value != NULL) {
-            sv_setpv($arg, $var.value);
+            sv_setpvn($arg, $var.value, $var.length);
 	    SvSETMAGIC($arg);
 	} else {
 	    sv_setsv_mg($arg, &PL_sv_undef);
@@ -292,7 +298,17 @@ T_BUFFER_STR_OUT
 	    gss_release_buffer(&minor, &$var);
 	}
 
-
+T_BUFFER_OIDSTR_OUT
+    if ($var.value != NULL) {
+            sv_setpv($arg, $var.value );
+        SvSETMAGIC($arg);
+    } else {
+        sv_setsv_mg($arg, &PL_sv_undef);
+    }
+    {
+        OM_uint32 minor;
+        gss_release_buffer(&minor, &$var);
+    }
 
 #
 #	Okay, what do all these different typemaps do?  Anything that

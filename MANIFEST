@@ -28,3 +28,4 @@ t/pod.t
 t/importnames.t
 t/indicatemechs.t
 ppport.h
+t/inquire_cred.t

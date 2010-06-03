@@ -154,3 +154,8 @@ Revision history for Perl extension GSSAPI.
           Thanks to Andrew Savchenko bircoph@gmail.com
         - Changed sizeof(outputtype) to 0 to let Perl calculate the lengh
           in Name.xs. Thanks to Zoltan BANAI <Zoltan.Banai@morganstanley.com>
+
+0.28    Do 3. Jun 12:11:21 UTC 2010
+        - Fixed Lenght-problem in typemap, T_BUFFER_STR_OUT for Heimdal.
+          Thanks to Slaven Rezic <slaven@rezic.de> for report and patch.
+

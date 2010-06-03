@@ -47,7 +47,7 @@ from_str(class, oid, str)
 GSSAPI::Status
 to_str(oid, str)
 	GSSAPI::OID		oid
-	gss_buffer_str_out	str
+	gss_oidstr_out	str
     CODE:
 	if (oid == NULL) {
 	    sv_setsv_mg(ST(1), &PL_sv_undef);
